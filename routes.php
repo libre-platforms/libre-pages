@@ -1,4 +1,5 @@
 <?php
+  use Framework\Router;
 
   $router->get('/', function() {
     print 'moin';
@@ -9,7 +10,13 @@
       print 'group';
     });
 
-    $router->get('/u-{abc:\d+}', function(&$request, &$response) {
-      var_dump($request->params());
-    });
+    $router->get('/u-{abc:\d+}', Router::make_handler_chain([
+      function(&$request, &$response, $next) {
+        $response->status_code(404);
+        return $next($request, $response);
+      },
+      function(&$request, &$response) {
+        return $response;
+      }
+    ]));
   });
