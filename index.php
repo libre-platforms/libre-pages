@@ -15,3 +15,19 @@
 //  along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
 
   require_once __DIR__.DIRECTORY_SEPARATOR.'autoload.php';
+
+  define('APP_ROOT', __DIR__);
+  define('APP_START', time());
+
+  $request = Framework\Request::from_current_request();
+
+  $router = require __DIR__.DIRECTORY_SEPARATOR.'/routes.php';
+
+  $handler_with_params = $router->get_handler($request->method(), $request->path());
+
+  if (is_array($handler_with_params)) {
+    [$handler, $params] = $handler_with_params;
+    $handler($request, $params);
+  } else {
+    print '[NO HANDLER FOUND]';
+  }
