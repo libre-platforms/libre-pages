@@ -19,6 +19,19 @@
       return $this->_prefix;
     }
 
+    static function make_handler_chain(array $handlers) {
+      $iterator = new \ArrayIterator($handlers);
+      $foo = function(&$request, &$response) use (&$iterator, &$foo) {
+        if ($iterator->valid()) {
+          $next_handler = $iterator->current();
+          $iterator->next();
+          $response = $next_handler($request, $response, $foo);
+          return $response;
+        }
+      };
+      return $foo;
+    }
+
     function add_route(string $method, string $route, $handler) {
       $this->_routes[$method][] = [$this->_prefix.$route, $handler];
     }
