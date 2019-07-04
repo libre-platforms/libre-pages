@@ -21,7 +21,7 @@
 
   $request = Framework\Request::from_current_request();
 
-  $router = require __DIR__.DIRECTORY_SEPARATOR.'/routes.php';
+  $router = require __DIR__.DIRECTORY_SEPARATOR.'routes.php';
 
   $handler_with_params = $router->get_handler($request->method(), $request->path());
 
