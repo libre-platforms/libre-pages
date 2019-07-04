@@ -9,7 +9,7 @@
       print 'group';
     });
 
-    $router->get('/u-{abc:\d+}', function(&$request, &$params) {
-      var_dump($params);
+    $router->get('/u-{abc:\d+}', function(&$request, &$response) {
+      var_dump($request->params());
     });
   });
