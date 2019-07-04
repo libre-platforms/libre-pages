@@ -19,17 +19,24 @@
   define('APP_ROOT', __DIR__);
   define('APP_START', time());
 
-  $request = Framework\Request::from_current_request();
-
   $router = new Framework\Router();
 
   require __DIR__.DIRECTORY_SEPARATOR.'routes.php';
 
-  $handler_with_params = $router->get_handler($request->method(), $request->path());
+  $request_path = $_SERVER['REQUEST_URI'];
+  if (strlen($request_path) > 1) {
+    $request_path = rtrim($request_path, '/');
+    if (strlen($request_path) === 0) {
+      $request_path = '/';
+    }
+  }
+  $handler_with_params = $router->get_handler($_SERVER['REQUEST_METHOD'], $request_path);
 
   if (is_array($handler_with_params)) {
     [$handler, $params] = $handler_with_params;
-    $handler($request, $params);
+    $request = Framework\Request::from_current_request($params);
+    $response = new Framework\Response;
+    $handler($request, $response);
   } else {
     print '[NO HANDLER FOUND]';
   }
