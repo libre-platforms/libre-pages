@@ -36,7 +36,8 @@
     [$handler, $params] = $handler_with_params;
     $request = Framework\Request::from_current_request($params);
     $response = new Framework\Response;
-    $handler($request, $response);
+    $response = $handler($request, $response);
+    print $response;
   } else {
     print '[NO HANDLER FOUND]';
   }
