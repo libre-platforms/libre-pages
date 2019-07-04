@@ -1,5 +1,4 @@
 <?php
-  $router = new Framework\Router;
 
   $router->get('/', function() {
     print 'moin';
@@ -14,6 +13,3 @@
       var_dump($params);
     });
   });
-
-
-  return $router;
