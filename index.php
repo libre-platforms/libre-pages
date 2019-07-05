@@ -48,9 +48,34 @@
     } else {
       print '[NO HANDLER FOUND]';
     }
-  } catch (\Throwable $error) {
+  } catch (\Throwable $ex) {
+    ob_clean();
     http_response_code(500);
-    print $error;
+      ?>
+<h1>An uncaught Exception has been thrown!</h1>
+Message: <?=$ex->getMessage()?><br />
+File with line: <?=$ex->getFile().':'.$ex->getLine()?><br />
+
+<h3>Stack Trace</h3>
+<table>
+  <thead>
+    <tr>
+      <th>File</th>
+      <th>Line</th>
+      <th>Function</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php foreach ($ex->getTrace() as $t): ?>
+      <tr>
+        <td><?=$t['file']?></td>
+        <td><?=$t['line']?></td>
+        <td><?=$t['function']?></td>
+      </tr>
+    <?php endforeach; ?>
+  </tbody>
+</table>
+<?php
   }
 
   $response_text = ob_get_contents();
