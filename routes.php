@@ -16,6 +16,8 @@
         return $next($request, $response);
       },
       function(&$request, &$response) {
+        $loader = Framework\makeAssetLoader($request);
+        $response->write($loader('img/hello-world.png'));
         return $response;
       }
     ]));
