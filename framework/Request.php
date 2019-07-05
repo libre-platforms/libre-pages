@@ -1,6 +1,14 @@
 <?php
   namespace Framework;
 
+  /**
+   * @property string $method
+   * @property string $path
+   * @property array $params
+   * @property bool $https
+   * @property string $server_name
+   * @property int $server_port
+   */
   class Request {
     protected $_data = [];
 
@@ -19,7 +27,7 @@
         'params' => &$params,
         'https' => isset($_SERVER['HTTPS']) || false,
         'server_name' => $_SERVER['SERVER_NAME'],
-        'server_port' => $_SERVER['SERVER_PORT'],
+        'server_port' => (int)$_SERVER['SERVER_PORT'],
       ];
 
       return new Request($request_data);
