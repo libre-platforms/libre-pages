@@ -1,13 +1,13 @@
 <?php
   use Framework\Router;
 
-  $router->get('/', function() {
-    print 'moin';
+  $router->get('/', function(&$request, &$response) {
+    return $response->write('moin');
   });
 
   $router->group('/grp', function ($router) {
-    $router->get('/bla', function() {
-      print 'group';
+    $router->get('/bla', function(&$request, &$response) {
+      return $response->write('bla');
     });
 
     $router->get('/u-{abc:\d+}', Router::make_handler_chain([
