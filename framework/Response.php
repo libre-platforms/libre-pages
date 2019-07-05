@@ -2,7 +2,7 @@
   namespace Framework;
 
   class Response {
-    protected $_status_code = StatusCode::HTTP_OK;
+    protected $_status_code = 200;
     protected $_content_type = 'text/html';
     protected $_content = '';
     protected $_view;
