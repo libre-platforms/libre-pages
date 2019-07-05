@@ -14,6 +14,8 @@
 //  You should have received a copy of the GNU Affero General Public License
 //  along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
 
+  declare(strict_types=1);
+
   require_once __DIR__.DIRECTORY_SEPARATOR.'autoload.php';
   // functions collection may be turned off, if it is not used
   require_once __DIR__.DIRECTORY_SEPARATOR.'framework'.DIRECTORY_SEPARATOR.'functions.php';

@@ -1,4 +1,5 @@
 <?php
+  declare(strict_types=1);
   namespace Framework;
 
   function make_asset_loader(Request& $request) {
