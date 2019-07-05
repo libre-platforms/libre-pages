@@ -15,6 +15,8 @@
 //  along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
 
   require_once __DIR__.DIRECTORY_SEPARATOR.'autoload.php';
+  // functions collection may be turned off, if it is not used
+  require_once __DIR__.DIRECTORY_SEPARATOR.'framework'.DIRECTORY_SEPARATOR.'functions.php';
 
   define('APP_ROOT', __DIR__);
   define('APP_START', time());
