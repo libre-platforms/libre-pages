@@ -12,12 +12,12 @@
 
     $router->get('/u-{abc:\d+}', Router::make_handler_chain([
       function(&$request, &$response, $next) {
-        $response->status_code(404);
+        $response->status(404);
         return $next($request, $response);
       },
       function(&$request, &$response) {
         $loader = Framework\makeAssetLoader($request);
-        $response->write($loader('img/hello-world.png'));
+        $response->json(['hello_image' => $loader('img/hello-world.png')]);
         return $response;
       }
     ]));
