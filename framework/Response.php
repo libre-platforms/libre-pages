@@ -1,4 +1,5 @@
 <?php
+  declare(strict_types=1);
   namespace Framework;
 
   class Response {
@@ -8,6 +9,7 @@
     protected $_view;
     protected $_view_evaluator;
     protected $_view_data;
+    protected $_cookies = [];
 
     function set_view_evaluator(\Closure $evaluator) {
       $this->_view_evaluator = $evaluator;
@@ -46,9 +48,23 @@
       return $this;
     }
 
+    function& set_cookie(string $name, string $value, array $options = []) {
+      $expires = $options['expires'] ?? 0;
+      $path = $options['path'] ?? '';
+      $domain = $options['domain'] ?? '';
+      $secure = $options['secure'] ?? false;
+      $http_only = $options['httponly'] ?? false;
+
+      $this->_cookies[$name] = [$value, $expires, $path, $domain, $secure, $http_only];
+      return $this;
+    }
+
     function send() {
       \http_response_code($this->_status_code);
       header('Content-Type: '.$this->_content_type);
+      foreach ($this->_cookies as $name => $cookie) {
+        setcookie($name, ...$cookie);
+      }
       if ($this->_view) {
         $eval = $this->_view_evaluator;
         $eval($this->_view, $this->_view_data);
