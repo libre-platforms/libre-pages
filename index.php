@@ -17,13 +17,14 @@
   require_once __DIR__.DIRECTORY_SEPARATOR.'autoload.php';
   // functions collection may be turned off, if it is not used
   require_once __DIR__.DIRECTORY_SEPARATOR.'framework'.DIRECTORY_SEPARATOR.'functions.php';
+  $view_evaulator = Framework\make_view_evaluator(__DIR__.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR);
 
   define('APP_ROOT', __DIR__);
   define('APP_START', time());
 
-  $router = new Framework\Router();
+  ob_start();
 
-  require __DIR__.DIRECTORY_SEPARATOR.'routes.php';
+  $router = new Framework\Router();
 
   $request_path = $_SERVER['REQUEST_URI'];
   if (strlen($request_path) > 1) {
@@ -32,14 +33,27 @@
       $request_path = '/';
     }
   }
-  $handler_with_params = $router->get_handler($_SERVER['REQUEST_METHOD'], $request_path);
 
-  if (is_array($handler_with_params)) {
-    [$handler, $params] = $handler_with_params;
-    $request = Framework\Request::from_current_request($params);
-    $response = new Framework\Response;
-    $response = $handler($request, $response);
-    print $response;
-  } else {
-    print '[NO HANDLER FOUND]';
+  try {
+    require __DIR__.DIRECTORY_SEPARATOR.'routes.php';
+    $handler_with_params = $router->get_handler($_SERVER['REQUEST_METHOD'], $request_path);
+
+    if (is_array($handler_with_params)) {
+      [$handler, $params] = $handler_with_params;
+      $request = Framework\Request::from_current_request($params);
+      $response = new Framework\Response;
+      $response->set_view_evaluator($view_evaulator);
+      $response = $handler($request, $response);
+      print $response->send();
+    } else {
+      print '[NO HANDLER FOUND]';
+    }
+  } catch (\Throwable $error) {
+    http_response_code(500);
+    print $error;
   }
+
+  $response_text = ob_get_contents();
+  ob_end_clean();
+
+  print $response_text;
