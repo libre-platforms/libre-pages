@@ -7,6 +7,7 @@
    * @property string $path
    * @property array $params
    * @property array $files
+   * @property array $cookies
    * @property bool $https
    * @property string $server_name
    * @property int $server_port
@@ -31,6 +32,7 @@
         'server_name' => $_SERVER['SERVER_NAME'],
         'server_port' => (int)$_SERVER['SERVER_PORT'],
         'files' => $_FILES,
+        'cookies' => $_COOKIE,
       ];
 
       return new Request($request_data);
