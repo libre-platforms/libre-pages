@@ -20,7 +20,7 @@
       return $this->_data[$key] ?? null;
     }
 
-    static function from_current_request(array& $params) {
+    static function from_current_request(array& $params = []) {
       $request_data = [
         'method' => $_SERVER['REQUEST_METHOD'],
         'path' => strlen($_SERVER['REQUEST_URI']) > 1 ? \rtrim($_SERVER['REQUEST_URI'], '/') : $_SERVER['REQUEST_URI'],
