@@ -40,6 +40,9 @@
 
     if (is_array($handler_with_params)) {
       [$handler, $params] = $handler_with_params;
+      if ($params === true) {
+        $params = [];
+      }
       $request = Framework\Request::from_current_request($params);
       $response = new Framework\Response;
       $response->set_view_evaluator($view_evaulator);
@@ -49,6 +52,7 @@
       print '[NO HANDLER FOUND]';
     }
   } catch (\Throwable $ex) {
+    $ob = ob_get_contents();
     ob_clean();
     http_response_code(500);
       ?>
@@ -75,6 +79,8 @@ File with line: <?=$ex->getFile().':'.$ex->getLine()?><br />
     <?php endforeach; ?>
   </tbody>
 </table>
+<p>Output generated before exception:</p>
+<pre><?=$ob?></pre>
 <?php
   }
 
