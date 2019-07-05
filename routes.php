@@ -19,6 +19,7 @@
         $loader = Framework\make_asset_loader($request);
         // $response->json(['hello_image' => $loader('img/hello-world.png')]);
         $response->view(['welcome']);
+        $response->set_cookie('foo', 'bar');
         return $response;
       }
     ]));
