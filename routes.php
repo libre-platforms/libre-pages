@@ -16,8 +16,9 @@
         return $next($request, $response);
       },
       function(&$request, &$response) {
-        $loader = Framework\makeAssetLoader($request);
-        $response->json(['hello_image' => $loader('img/hello-world.png')]);
+        $loader = Framework\make_asset_loader($request);
+        // $response->json(['hello_image' => $loader('img/hello-world.png')]);
+        $response->view(['welcome']);
         return $response;
       }
     ]));
