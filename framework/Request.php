@@ -2,26 +2,14 @@
   namespace Framework;
 
   class Request {
-    protected $_method;
-    protected $_path;
-    protected $_params;
+    protected $_data = [];
 
     function __construct(array& $request_data) {
-      $this->_method = $request_data['method'];
-      $this->_path = $request_data['path'];
-      $this->_params = $request_data['params'];
+      $this->_data = $request_data;
     }
 
-    function method() {
-      return $this->_method;
-    }
-
-    function path() {
-      return $this->_path;
-    }
-
-    function &params() {
-      return $this->_params;
+    function __get(string $key) {
+      return $this->_data[$key] ?? null;
     }
 
     static function from_current_request(array& $params) {
@@ -29,6 +17,9 @@
         'method' => $_SERVER['REQUEST_METHOD'],
         'path' => strlen($_SERVER['REQUEST_URI']) > 1 ? \rtrim($_SERVER['REQUEST_URI'], '/') : $_SERVER['REQUEST_URI'],
         'params' => &$params,
+        'https' => isset($_SERVER['HTTPS']) || false,
+        'server_name' => $_SERVER['SERVER_NAME'],
+        'server_port' => $_SERVER['SERVER_PORT'],
       ];
 
       return new Request($request_data);
