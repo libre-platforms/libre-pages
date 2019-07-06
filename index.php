@@ -1,4 +1,6 @@
 <?php
+//  Copyright (C) 2019 Jörn Neumeyer
+//
 //  This file is part of LibrePages.
 //
 //  LibrePages is free software: you can redistribute it and/or modify
