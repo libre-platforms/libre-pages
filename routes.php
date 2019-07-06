@@ -23,4 +23,9 @@
         return $response;
       }
     ]));
+
+    $router->post('/u-{abc:\d+}', function(&$request, &$response) {
+      var_dump($request->files);
+      return $response;
+    });
   });
