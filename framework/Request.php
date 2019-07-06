@@ -24,6 +24,12 @@
     }
 
     static function from_current_request(array& $params = []) {
+      $files = [];
+
+      foreach ($_FILES as $field_name => $file) {
+        $files[$field_name] = new RequestFile($file);
+      }
+
       $request_data = [
         'method' => $_SERVER['REQUEST_METHOD'],
         'path' => strlen($_SERVER['REQUEST_URI']) > 1 ? \rtrim($_SERVER['REQUEST_URI'], '/') : $_SERVER['REQUEST_URI'],
@@ -31,7 +37,7 @@
         'https' => isset($_SERVER['HTTPS']) || false,
         'server_name' => $_SERVER['SERVER_NAME'],
         'server_port' => (int)$_SERVER['SERVER_PORT'],
-        'files' => $_FILES,
+        'files' => $files,
         'cookies' => $_COOKIE,
       ];
 
