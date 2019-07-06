@@ -10,6 +10,7 @@
    * @property array $params
    * @property array $files
    * @property array $cookies
+   * @property array $headers
    * @property bool $https
    * @property string $server_name
    * @property int $server_port
@@ -44,6 +45,7 @@
         'server_port' => (int)$_SERVER['SERVER_PORT'],
         'files' => $files,
         'cookies' => $_COOKIE,
+        'headers' => getallheaders(),
       ];
 
       return new Request($request_data);
