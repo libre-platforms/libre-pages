@@ -28,7 +28,7 @@
 
   $router = new Framework\Router();
 
-  $request_path = $_SERVER['REQUEST_URI'];
+  $request_path = $_SERVER['PATH_INFO'];
   if (strlen($request_path) > 1) {
     $request_path = rtrim($request_path, '/');
     if (strlen($request_path) === 0) {
