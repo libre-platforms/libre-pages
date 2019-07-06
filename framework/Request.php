@@ -3,6 +3,8 @@
   namespace Framework;
 
   /**
+   * Represents an incoming request to the server.
+   *
    * @property string $method
    * @property string $path
    * @property array $params
@@ -23,6 +25,9 @@
       return $this->_data[$key] ?? null;
     }
 
+    /**
+     * Constructs a Request object from the given data of the current request.
+     */
     static function from_current_request(array& $params = []) {
       $files = [];
 
@@ -32,7 +37,7 @@
 
       $request_data = [
         'method' => $_SERVER['REQUEST_METHOD'],
-        'path' => strlen($_SERVER['REQUEST_URI']) > 1 ? \rtrim($_SERVER['REQUEST_URI'], '/') : $_SERVER['REQUEST_URI'],
+        'path' => strlen($_SERVER['PATH_INFO']) > 1 ? \rtrim($_SERVER['PATH_INFO'], '/') : $_SERVER['PATH_INFO'],
         'params' => &$params,
         'https' => isset($_SERVER['HTTPS']) || false,
         'server_name' => $_SERVER['SERVER_NAME'],
