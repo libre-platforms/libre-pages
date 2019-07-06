@@ -2,6 +2,9 @@
   declare(strict_types=1);
   namespace Framework;
 
+  /**
+   * Represents a server response.
+   */
   class Response {
     protected $_status_code = 200;
     protected $_content_type = 'text/html';
@@ -11,10 +14,17 @@
     protected $_view_data;
     protected $_cookies = [];
 
-    function set_view_evaluator(\Closure $evaluator) {
+    /**
+     * Sets the function needed to evaluate a view.
+     */
+    function& set_view_evaluator(\Closure $evaluator) {
       $this->_view_evaluator = $evaluator;
+      return $this;
     }
 
+    /**
+     * Sets the status code of the response instance.
+     */
     function& status(?int $status_code = null) {
       if ($status_code) {
         $this->_status_code = $status_code;
@@ -24,6 +34,9 @@
       }
     }
 
+    /**
+     * Sets/gets the Content-Type of the surrent request.
+     */
     function& content_type(?string $content_type = null) {
       if ($content_type) {
         $this->_content_type = $content_type;
@@ -33,21 +46,34 @@
       }
     }
 
+    /**
+     * Writes the given string to the content of the response.
+     */
     function& write(string $content) {
       $this->_content .= $content;
       return $this;
     }
 
+    /**
+     * Sets the content type of the response to application/json and writes the given data as JSON to the response.
+     * JSON conversion of the data happens internally.
+     */
     function& json($json) {
       return $this->content_type('application/json')->write(json_encode($json));
     }
 
+    /**
+     * Sets the view which should be rendered when the response is sent.
+     */
     function& view(array $view, array $data = []) {
       $this->_view = $view;
       $this->_view_data = $data;
       return $this;
     }
 
+    /**
+     * Sets a cookie for the response.
+     */
     function& set_cookie(string $name, string $value, array $options = []) {
       $expires = $options['expires'] ?? 0;
       $path = $options['path'] ?? '';
@@ -59,6 +85,12 @@
       return $this;
     }
 
+    /**
+     * Sets the status code, header, and cookies of the response.
+     *
+     * In case a view has been set, that view will be evaluated.
+     * Otherwise, the response content will be printed.
+     */
     function send() {
       \http_response_code($this->_status_code);
       header('Content-Type: '.$this->_content_type);
