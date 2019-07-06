@@ -66,8 +66,7 @@
         setcookie($name, ...$cookie);
       }
       if ($this->_view) {
-        $eval = $this->_view_evaluator;
-        $eval($this->_view, $this->_view_data);
+        ($this->_view_evaluator)($this->_view, $this->_view_data);
       } else {
         print $this->_content;
       }
