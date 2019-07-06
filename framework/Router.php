@@ -2,6 +2,9 @@
   declare(strict_types=1);
   namespace Framework;
 
+  /**
+   * Represents a router.
+   */
   class Router {
     protected $_prefix;
     protected $_groups = [];
@@ -16,10 +19,16 @@
       $this->_prefix = $prefix;
     }
 
+    /**
+     * Returns the defined prefix for the router instance.
+     */
     function prefix() {
       return $this->_prefix;
     }
 
+    /**
+     * Returns a function, which builds a chain out of the given handlers.
+     */
     static function make_handler_chain(array $handlers) {
       $iterator = new \ArrayIterator($handlers);
       $foo = function(&$request, &$response) use (&$iterator, &$foo) {
@@ -33,30 +42,53 @@
       return $foo;
     }
 
-    function add_route(string $method, string $route, $handler) {
+    /**
+     * Registers a route handler for a given route and HTTP method.
+     */
+    protected function add_route(string $method, string $route, $handler) {
       $this->_routes[$method][] = [$this->_prefix.$route, $handler];
     }
 
+    /**
+     * Registers a handler for GET requests on the given route.
+     */
     function get(string $route, $handler) {
       return $this->add_route('GET', $route, $handler);
     }
 
+    /**
+     * Registers a handler for POST requests on the given route.
+     */
     function post(string $route, $handler) {
       return $this->add_route('POST', $route, $handler);
     }
 
+    /**
+     * Registers a handler for PUT requests on the given route.
+     */
     function put(string $route, $handler) {
       return $this->add_route('PUT', $route, $handler);
     }
 
+    /**
+     * Registers a handler for DELETE requests on the given route.
+     */
     function delete(string $route, $handler) {
       return $this->add_route('DELETE', $route, $handler);
     }
 
+    /**
+     * Registers a callback, which build sub-routes using the given route prefix.
+     */
     function group(string $route, \Closure $group_builder) {
       $this->_groups[] = new RouteGroup($route, $group_builder);
     }
 
+    /**
+     * Returns an array containing the matching route handler and its parameters.
+     *
+     * If no fitting handler can be found for the given method and path, null will be returned.
+     */
     function get_handler(string $method, string $path) {
       $routes = $this->_routes[$method];
 
@@ -73,6 +105,12 @@
       }
     }
 
+    /**
+     * Matches a given path to a route.
+     *
+     * If path and route match, an array containing the route parameters will be returned.
+     * Otherwise, false will be returned.
+     */
     static function match_path_to_route(string $path, string $route) {
       $path_length = strlen($path);
       $route_length = strlen($route);
@@ -145,7 +183,7 @@
       if ($has_params) {
         return $params;
       } else {
-        return true;
+        return [];
       }
     }
   }
