@@ -41,8 +41,5 @@
       }
     ]));
 
-    $router->post('/u-{abc:\d+}', function(&$request, &$response) {
-      var_dump($request->files);
-      return $response;
-    });
+    $router->post('/u-{abc:\d+}', 'App\\TestController::user_by_id');
   });
