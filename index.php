@@ -30,11 +30,9 @@
 
   $router = new Framework\Router();
 
-  $request_path = $_SERVER['PATH_INFO'];
+  $request_path = $_SERVER['PATH_INFO'] ?? '/';
   
-  if (!$request_path) {
-    $request_path = '/';
-  } else {
+  if ($request_path !== '/') {
     $request_path = rtrim($request_path, '/');
   }
 

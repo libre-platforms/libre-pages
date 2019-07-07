@@ -47,6 +47,7 @@
      * Constructs a Request object from the given data of the current request.
      */
     static function from_current_request(array& $params = []) {
+      $path_info = $_SERVER['PATH_INFO'] ?? '/';
       $files = [];
 
       foreach ($_FILES as $field_name => $file) {
@@ -55,7 +56,7 @@
 
       $request_data = [
         'method' => $_SERVER['REQUEST_METHOD'],
-        'path' => strlen($_SERVER['PATH_INFO'] ?? '/') > 1 ? \rtrim($_SERVER['PATH_INFO'], '/') : $_SERVER['PATH_INFO'],
+        'path' => strlen($path_info) > 1 ? \rtrim($path_info, '/') : $path_info,
         'params' => &$params,
         'https' => isset($_SERVER['HTTPS']) || false,
         'server_name' => $_SERVER['SERVER_NAME'],
