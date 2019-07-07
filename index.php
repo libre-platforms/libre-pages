@@ -31,11 +31,11 @@
   $router = new Framework\Router();
 
   $request_path = $_SERVER['PATH_INFO'];
-  if (strlen($request_path) > 1) {
+  
+  if (!$request_path) {
+    $request_path = '/';
+  } else {
     $request_path = rtrim($request_path, '/');
-    if (strlen($request_path) === 0) {
-      $request_path = '/';
-    }
   }
 
   try {

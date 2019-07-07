@@ -55,7 +55,7 @@
 
       $request_data = [
         'method' => $_SERVER['REQUEST_METHOD'],
-        'path' => strlen($_SERVER['PATH_INFO']) > 1 ? \rtrim($_SERVER['PATH_INFO'], '/') : $_SERVER['PATH_INFO'],
+        'path' => strlen($_SERVER['PATH_INFO'] ?? '/') > 1 ? \rtrim($_SERVER['PATH_INFO'], '/') : $_SERVER['PATH_INFO'],
         'params' => &$params,
         'https' => isset($_SERVER['HTTPS']) || false,
         'server_name' => $_SERVER['SERVER_NAME'],
