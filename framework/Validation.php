@@ -20,14 +20,60 @@
   namespace Framework;
 
   class Validation {
+    protected $_request_data_index;
+    protected $_field_name;
     protected $_expected_type;
+    protected $_required = true;
+
+    private function __construct(string $request_data_index, string $field_name) {
+      $this->_request_data_index = $request_data_index;
+      $this->_field_name = $field_name;
+    }
 
     function __invoke(&$request, &$response, &$next) {
+      $request->validation_errors = $request->validation_errors ?? [];
+      $foo = $this->_request_data_index;
 
+      if ($this->_required) {
+        if (!isset($request->$$foo[$this->_field_name])) {
+          $request->validation_errors[$this->_field_name] = $request->validation_errors[$this->_field_name] ?? [];
+          $request->validation_errors[$this->_field_name][] = "Missing required field '{$this->_field_name}'!";
+          return $next($request, $response);
+        }
+      } else {
+        if (!isset($request->$$foo[$this->_field_name])) {
+          return $next($request, $response);
+        }
+      }
+
+      return $next($request, $response);
     }
 
     function& is_string() {
       $this->_expected_type = 'string';
       return $this;
+    }
+
+    static function query(string $field_name) {
+      return new self('query', $field_name);
+    }
+
+    static function param(string $field_name) {
+      return new self('params', $field_name);
+    }
+
+    static function body(string $field_name) {
+      return new self('body', $field_name);
+    }
+
+    static function redirect_on_error(&$request, &$response, &$next) {
+      if (isset($request->validation_errors)) {
+        if ($request->validation_errors !== []) {
+          return $response
+            ->status(422)
+            ->json(['errors' => $request->validation_errors]);
+        }
+      }
+      return $next($request, $response);
     }
   }
