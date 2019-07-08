@@ -28,6 +28,7 @@
    * @property array $files
    * @property array $cookies
    * @property array $headers
+   * @property array $query
    * @property bool $https
    * @property string $server_name
    * @property int $server_port
@@ -64,6 +65,7 @@
         'files' => $files,
         'cookies' => $_COOKIE,
         'headers' => getallheaders(),
+        'query' => $_GET,
       ];
 
       return new Request($request_data);
