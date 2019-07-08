@@ -56,6 +56,16 @@
         $files[$field_name] = new RequestFile($file);
       }
 
+      $body = [];
+
+      foreach ($_POST as $k => $v) {
+        if (!is_string($v)) {
+          continue;
+        } else if (strlen($v) > 0) {
+          $body[$k] = $v;
+        }
+      }
+
       $request_data = [
         'method' => $_SERVER['REQUEST_METHOD'],
         'path' => strlen($path_info) > 1 ? \rtrim($path_info, '/') : $path_info,
@@ -67,7 +77,7 @@
         'cookies' => $_COOKIE,
         'headers' => getallheaders(),
         'query' => $_GET,
-        'body' => $_POST,
+        'body' => $body,
       ];
 
       return new Request($request_data);
