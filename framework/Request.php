@@ -29,6 +29,7 @@
    * @property array $cookies
    * @property array $headers
    * @property array $query
+   * @property array $body
    * @property bool $https
    * @property string $server_name
    * @property int $server_port
@@ -66,6 +67,7 @@
         'cookies' => $_COOKIE,
         'headers' => getallheaders(),
         'query' => $_GET,
+        'body' => $_POST,
       ];
 
       return new Request($request_data);
