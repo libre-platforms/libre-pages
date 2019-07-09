@@ -34,7 +34,7 @@
    * @property string $server_name
    * @property int $server_port
    */
-  class Request {
+  class Request implements \ArrayAccess {
     protected $_data = [];
 
     function __construct(array& $request_data) {
@@ -43,6 +43,22 @@
 
     function __get(string $key) {
       return $this->_data[$key] ?? null;
+    }
+
+    function offsetExists($key) {
+      return isset($this->_data[$key]);
+    }
+
+    function offsetGet($key) {
+      return $this->_data[$key];
+    }
+
+    function offsetSet($key, $value) {
+      $this->_data[$key] = $value;
+    }
+
+    function offsetUnset($key) {
+      unset($this->_data[$key]);
     }
 
     /**
