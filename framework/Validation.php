@@ -34,12 +34,39 @@
       $request->validation_errors = $request->validation_errors ?? [];
       $foo = $this->_request_data_index;
 
-      if (!isset($request->$$foo[$this->_field_name])) {
+      if (!isset($request[$foo][$this->_field_name])) {
         if ($this->_required) {
           $request->validation_errors[$this->_field_name] = $request->validation_errors[$this->_field_name] ?? [];
           $request->validation_errors[$this->_field_name][] = "Missing required field '{$this->_field_name}'!";
         }
         return $next($request, $response);
+      }
+
+      $field_value = $request[$foo][$this->_field_name];
+
+      if ($this->_expected_type) {
+        $type_checker = null;
+        switch ($this->_expected_type) {
+          case 'int':
+            $type_checker = 'is_int';
+            break;
+          case 'string':
+            $type_checker = 'is_string';
+            break;
+          case 'array':
+            $type_checker = 'is_array';
+            break;
+            case 'float':
+            $type_checker = 'is_float';
+            break;
+          case 'numeric':
+            $type_checker = 'is_numeric';
+            break;
+        }
+        if (!$type_checker($field_value)) {
+          $request->validation_errors[$this->_field_name] = $request->validation_errors[$this->_field_name] ?? [];
+          $request->validation_errors[$this->_field_name][] = "Expected field '{$this->_field_name}' to be of type '{$this->_expected_type}'!";
+        }
       }
 
       return $next($request, $response);
@@ -64,6 +91,10 @@
 
     function& is_array() {
       return $this->is_type('array');
+    }
+
+    function& is_numeric() {
+      return $this->is_type('numeric');
     }
 
     static function query(string $field_name) {
