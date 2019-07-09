@@ -34,16 +34,12 @@
       $request->validation_errors = $request->validation_errors ?? [];
       $foo = $this->_request_data_index;
 
-      if ($this->_required) {
-        if (!isset($request->$$foo[$this->_field_name])) {
+      if (!isset($request->$$foo[$this->_field_name])) {
+        if ($this->_required) {
           $request->validation_errors[$this->_field_name] = $request->validation_errors[$this->_field_name] ?? [];
           $request->validation_errors[$this->_field_name][] = "Missing required field '{$this->_field_name}'!";
-          return $next($request, $response);
         }
-      } else {
-        if (!isset($request->$$foo[$this->_field_name])) {
-          return $next($request, $response);
-        }
+        return $next($request, $response);
       }
 
       return $next($request, $response);
