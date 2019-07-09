@@ -90,6 +90,9 @@
 
     /**
      * Sets a cookie for the response.
+     * 
+     * Implementation corresponds to the PHP7.3 implementation of setcookie.
+     * @link https://www.php.net/manual/en/function.setcookie.php
      */
     function& set_cookie(string $name, string $value, array $options = []) {
       $expires = $options['expires'] ?? 0;
