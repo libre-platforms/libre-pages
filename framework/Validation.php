@@ -45,9 +45,25 @@
       return $next($request, $response);
     }
 
-    function& is_string() {
-      $this->_expected_type = 'string';
+    private function& is_type(string $type) {
+      $this->_expected_type = $type;
       return $this;
+    }
+
+    function& is_string() {
+      return $this->is_type('string');
+    }
+
+    function& is_int() {
+      return $this->is_type('int');
+    }
+
+    function& is_float() {
+      return $this->is_type('float');
+    }
+
+    function& is_array() {
+      return $this->is_type('array');
     }
 
     static function query(string $field_name) {
