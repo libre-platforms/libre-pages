@@ -33,7 +33,7 @@
     function __invoke(Request &$request, Response &$response, callable &$next) {
       $foo = $this->_request_data_index;
 
-      if (!isset($request[$foo][$this->_field_name])) {
+      if (!isset($request->{$foo}[$this->_field_name])) {
         if ($this->_required) {
           $request->validation_errors[$this->_field_name] = $request->validation_errors[$this->_field_name] ?? [];
           $request->validation_errors[$this->_field_name][] = "Missing required field '{$this->_field_name}'!";
@@ -41,7 +41,7 @@
         return $next($request, $response);
       }
 
-      $field_value = $request[$foo][$this->_field_name];
+      $field_value = $request->{$foo}[$this->_field_name];
 
       if ($this->_expected_type) {
         $type_checker = null;
