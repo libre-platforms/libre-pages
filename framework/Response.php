@@ -33,6 +33,8 @@
 
     /**
      * Sets the function needed to evaluate a view.
+     * 
+     * @return Response
      */
     function& set_view_evaluator(\Closure $evaluator) {
       $this->_view_evaluator = $evaluator;
@@ -41,6 +43,8 @@
 
     /**
      * Sets the status code of the response instance.
+     * 
+     * @return Response|int
      */
     function& status(?int $status_code = null) {
       if ($status_code) {
@@ -53,6 +57,8 @@
 
     /**
      * Sets/gets the Content-Type of the surrent request.
+     * 
+     * @return Response|string
      */
     function& content_type(?string $content_type = null) {
       if ($content_type) {
@@ -65,6 +71,8 @@
 
     /**
      * Writes the given string to the content of the response.
+     * 
+     * @return Response
      */
     function& write(string $content) {
       $this->_content .= $content;
@@ -74,6 +82,8 @@
     /**
      * Sets the content type of the response to application/json and writes the given data as JSON to the response.
      * JSON conversion of the data happens internally.
+     * 
+     * @return Response
      */
     function& json($json) {
       return $this->content_type('application/json')->write(json_encode($json));
@@ -81,6 +91,8 @@
 
     /**
      * Sets the view which should be rendered when the response is sent.
+     * 
+     * @return Response
      */
     function& view(array $view, array $data = []) {
       $this->_view = $view;
@@ -93,6 +105,8 @@
      * 
      * Implementation corresponds to the PHP7.3 implementation of setcookie.
      * @link https://www.php.net/manual/en/function.setcookie.php
+     * 
+     * @return Response
      */
     function& set_cookie(string $name, string $value, array $options = []) {
       $expires = $options['expires'] ?? 0;
@@ -110,6 +124,8 @@
      *
      * In case a view has been set, that view will be evaluated.
      * Otherwise, the response content will be printed.
+     * 
+     * @return void
      */
     function send() {
       \http_response_code($this->_status_code);
