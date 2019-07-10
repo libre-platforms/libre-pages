@@ -30,8 +30,7 @@
       $this->_field_name = $field_name;
     }
 
-    function __invoke(&$request, &$response, &$next) {
-      $request->validation_errors = $request->validation_errors ?? [];
+    function __invoke(Request &$request, Response &$response, callable &$next) {
       $foo = $this->_request_data_index;
 
       if (!isset($request[$foo][$this->_field_name])) {
