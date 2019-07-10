@@ -64,6 +64,7 @@
      */
     protected function add_route(string $method, string $route, $handler) {
       $this->_routes[$method][] = [$this->_prefix.$route, $handler];
+      return $this;
     }
 
     /**
