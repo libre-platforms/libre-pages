@@ -63,6 +63,8 @@
 
     /**
      * Constructs a Request object from the given data of the current request.
+     * 
+     * @return Request
      */
     static function from_current_request(array& $params = []) {
       $path_info = $_SERVER['PATH_INFO'] ?? '/';
