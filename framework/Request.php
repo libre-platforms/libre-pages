@@ -30,6 +30,7 @@
    * @property array $headers
    * @property array $query
    * @property array $body
+   * @property array $validation_errors
    * @property bool $https
    * @property string $server_name
    * @property int $server_port
@@ -39,6 +40,7 @@
 
     function __construct(array& $request_data) {
       $this->_data = $request_data;
+      $this->_data['validation_errors'] = [];
     }
 
     function __get(string $key) {
