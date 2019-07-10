@@ -35,7 +35,7 @@
    * @property string $server_name
    * @property int $server_port
    */
-  class Request implements \ArrayAccess {
+  class Request {
     /** @var string $method */
     public $method = '';
 
@@ -71,22 +71,6 @@
 
     /** @var int $server_port */
     public $server_port = 0;
-
-    function offsetExists($key) {
-      return isset($this->_data[$key]);
-    }
-
-    function offsetGet($key) {
-      return $this->_data[$key];
-    }
-
-    function offsetSet($key, $value) {
-      $this->_data[$key] = $value;
-    }
-
-    function offsetUnset($key) {
-      unset($this->_data[$key]);
-    }
 
     /**
      * Constructs a Request object from the given data of the current request.
