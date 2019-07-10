@@ -43,6 +43,8 @@
 
     /**
      * Trys to save an uploaded file to the given location.
+     * 
+     * @return bool
      */
     function save(string $destination) {
       if (!$this->_is_saved) {
@@ -53,6 +55,8 @@
 
     /**
      * Returns a bool, representing the success of the file upload.
+     * 
+     * @return bool
      */
     function is_ok() {
       return $this->error === UPLOAD_ERR_OK;
