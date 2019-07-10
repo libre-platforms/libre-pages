@@ -9,5 +9,8 @@
             "email": "contact@joern-neumeyer.de"
         }
     ],
-    "require": {}
+    "require": {},
+    "require-dev": {
+        "phan/phan": "^2.2"
+    }
 }
