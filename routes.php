@@ -16,24 +16,23 @@
 //  You should have received a copy of the GNU Affero General Public License
 //  along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
 
-  use Framework\Router;
-  use Framework\Validation;
+  use Framework\{Request, Response, Router, Validation};
 
-  $router->get('/', function($request, $response) {
+  $router->get('/', function(Request $request, Response $response) {
     return $response->write('moin');
   });
 
-  $router->group('/grp', function ($router) {
-    $router->get('/bla', function($request, $response) {
+  $router->group('/grp', function (Router $router) {
+    $router->get('/bla', function(Request $request, Response $response) {
       return $response->write('bla');
     });
 
     $router->get('/u-{abc:\d+}', Router::make_handler_chain([
-      function($request, $response, $next) {
+      function(Request $request, Response $response, callable $next) {
         $response->status(404);
         return $next($request, $response);
       },
-      function($request, $response) {
+      function(Request $request, Response $response) {
         $loader = Framework\make_asset_loader($request);
         // $response->json(['hello_image' => $loader('img/hello-world.png')]);
         $response->view(['welcome']);
@@ -45,7 +44,7 @@
     $router->post('/validated-route', Router::make_handler_chain([
       Validation::body('foo')->is_numeric(),
       'Framework\\Validation::redirect_on_error',
-      function($request, $response) {
+      function(Request $request, Response $response) {
         $response->write($request->body['foo']);
         return $response;
       }
