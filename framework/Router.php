@@ -153,7 +153,6 @@
       $path_length = strlen($path);
       $route_length = strlen($route);
       $params = [];
-      $has_params = false;
 
       for ($i_path = 0, $i_route = 0; ; ++$i_path, ++$i_route) {
         if ($i_path === $path_length && $i_route === $route_length) {
@@ -165,7 +164,6 @@
         }
 
         if ($route[$i_route] === '{') {
-          $has_params = true;
           $brace_counter = 1;
 
           for ($j = 1; $i_route + $j < $route_length; ++$j) {
@@ -218,10 +216,6 @@
         }
       }
 
-      if ($has_params) {
-        return $params;
-      } else {
-        return [];
-      }
+      return $params;
     }
   }
