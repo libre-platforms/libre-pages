@@ -43,7 +43,7 @@
 
     $router->post('/validated-route', Router::make_handler_chain([
       Validation::body('foo')->is_numeric(),
-      'Framework\\Validation::redirect_on_error',
+      'Framework\\Validation::reject_on_error',
       function(Request $request, Response $response) {
         $response->write($request->body['foo']);
         return $response;
