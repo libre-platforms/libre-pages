@@ -158,7 +158,7 @@
      * 
      * @return Response
      */
-    static function redirect_on_error(Request &$request, Response &$response, callable &$next) {
+    static function reject_on_error(Request &$request, Response &$response, callable &$next) {
       if (isset($request->validation_errors)) {
         if ($request->validation_errors !== []) {
           return $response
