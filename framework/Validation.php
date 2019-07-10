@@ -71,44 +71,94 @@
       return $next($request, $response);
     }
 
+    /**
+     * Checks if the given value is of the passed type.
+     * 
+     * @return Validation
+     */
     private function& is_type(string $type) {
       $this->_expected_type = $type;
       return $this;
     }
 
+    /**
+     * Checks if the given value is of type string.
+     * 
+     * @return Validation
+     */
     function& is_string() {
       return $this->is_type('string');
     }
 
+    /**
+     * Checks if the given value is of type int.
+     * 
+     * @return Validation
+     */
     function& is_int() {
       return $this->is_type('int');
     }
 
+    /**
+     * Checks if the given value is of type float.
+     * 
+     * @return Validation
+     */
     function& is_float() {
       return $this->is_type('float');
     }
 
+    /**
+     * Checks if the given value is of type array.
+     * 
+     * @return Validation
+     */
     function& is_array() {
       return $this->is_type('array');
     }
 
+    /**
+     * Checks if the given value is numeric.
+     * 
+     * @return Validation
+     */
     function& is_numeric() {
       return $this->is_type('numeric');
     }
 
+    /**
+     * Creates a validation for a field passed as a query parameter.
+     * 
+     * @return Validation
+     */
     static function query(string $field_name) {
       return new self('query', $field_name);
     }
 
+    /**
+     * Creates a validation for a field passed via the called route.
+     * 
+     * @return Validation
+     */
     static function param(string $field_name) {
       return new self('params', $field_name);
     }
 
+    /**
+     * Creates a validation for a field passed in the request body.
+     * 
+     * @return Validation
+     */
     static function body(string $field_name) {
       return new self('body', $field_name);
     }
 
-    static function redirect_on_error(&$request, &$response, &$next) {
+    /**
+     * Rejects the request with a 422 status, if any error in the request validation occurred.
+     * 
+     * @return Response
+     */
+    static function redirect_on_error(Request &$request, Response &$response, callable &$next) {
       if (isset($request->validation_errors)) {
         if ($request->validation_errors !== []) {
           return $response
