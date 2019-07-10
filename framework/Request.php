@@ -36,16 +36,41 @@
    * @property int $server_port
    */
   class Request implements \ArrayAccess {
-    protected $_data = [];
+    /** @var string $method */
+    public $method = '';
 
-    function __construct(array& $request_data) {
-      $this->_data = $request_data;
-      $this->_data['validation_errors'] = [];
-    }
+    /** @var string $path */
+    public $path = '';
 
-    function __get(string $key) {
-      return $this->_data[$key] ?? null;
-    }
+    /** @var array $params */
+    public $params = [];
+
+    /** @var array $files */
+    public $files = [];
+
+    /** @var array $cookies */
+    public $cookies = [];
+
+    /** @var array $headers */
+    public $headers = [];
+
+    /** @var array $query */
+    public $query = [];
+
+    /** @var string $body */
+    public $body = '';
+
+    /** @var array $validation_errors */
+    public $validation_errors = [];
+
+    /** @var bool $https */
+    public $https = false;
+
+    /** @var string $server_name */
+    public $server_name = '';
+
+    /** @var int $server_port */
+    public $server_port = 0;
 
     function offsetExists($key) {
       return isset($this->_data[$key]);
@@ -86,20 +111,20 @@
         }
       }
 
-      $request_data = [
-        'method' => $_SERVER['REQUEST_METHOD'],
-        'path' => strlen($path_info) > 1 ? \rtrim($path_info, '/') : $path_info,
-        'params' => &$params,
-        'https' => isset($_SERVER['HTTPS']) || false,
-        'server_name' => $_SERVER['SERVER_NAME'],
-        'server_port' => (int)$_SERVER['SERVER_PORT'],
-        'files' => $files,
-        'cookies' => $_COOKIE,
-        'headers' => getallheaders(),
-        'query' => $_GET,
-        'body' => $body,
-      ];
+      $request = new Request;
 
-      return new Request($request_data);
+      $request->method = $_SERVER['REQUEST_METHOD'];
+      $request->path = strlen($path_info) > 1 ? \rtrim($path_info, '/') : $path_info;
+      $request->params = &$params;
+      $request->https = isset($_SERVER['HTTPS']);
+      $request->server_name = $_SERVER['SERVER_NAME'];
+      $request->server_port = (int)$_SERVER['SERVER_PORT'];
+      $request->files = $files;
+      $request->cookies = &$_COOKIE;
+      $request->headers = getallheaders();
+      $request->query = &$_GET;
+      $request->body = $body;
+
+      return $request;
     }
   }
