@@ -1,6 +1,9 @@
 # LibrePages
 LibrePages is a free software project to provide a simple set of tools to easily build web applications using PHP.
-Its focus does not lie on the development of fullstack applications, but on API development.
+Its focus does not lie on the development of fullstack applications, but on REST API development.
+
+## Documentation
+Documentation may be found in the folder `docs`.
 
 ## License
 LibrePages is free software: you can redistribute it and/or modify
