@@ -33,6 +33,8 @@
 
     /**
      * Builds and returns a router for the route group with the specified prefix.
+     * 
+     * @return Router
      */
     function get_router() {
       $router = new Router($this->_route);
