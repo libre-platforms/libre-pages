@@ -159,7 +159,7 @@
           }
 
           if ($brace_counter !== 0) {
-            throw new Exception('Missing closing curly brace in param definition!');
+            throw new \Exception('Missing closing curly brace in param definition!');
           }
 
           $param = \substr($route, $i_route + 1, $j - 1);
