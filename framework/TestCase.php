@@ -43,7 +43,7 @@
     }
 
     function run() {
-      $ref = new \ReflectionClass(self::class);
+      $ref = new \ReflectionObject($this);
       $methods = $ref->getMethods();
       $tests = [];
 
