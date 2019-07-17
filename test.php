@@ -15,5 +15,20 @@
 //
 //  You should have received a copy of the GNU Affero General Public License
 //  along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
+  require_once __DIR__.DIRECTORY_SEPARATOR.'autoload.php';
+  require_once __DIR__.DIRECTORY_SEPARATOR.'framework'.DIRECTORY_SEPARATOR.'functions.php';
+
   $files = scandir(__DIR__.DIRECTORY_SEPARATOR.'tests');
-  $scripts = [];
+  $test_suites_classes = [];
+
+  foreach ($files as $file) {
+    if (Framework\ends_with($file, '.php')) {
+      $test_suites_classes[] = substr($file, 0, strlen($file) - 4);
+    }
+  }
+
+  foreach ($test_suites_classes as $test_suites_class) {
+    $class_name = 'Tests\\'.$test_suites_class;
+    $test_suite = new $class_name();
+    $test_suite->run();
+  }
