@@ -1,7 +1,9 @@
 <?php
   namespace Tests;
 
-  class ExampleTest extends Framework\TestCase {
+  use Framework\TestCase;
+
+  class ExampleTest extends TestCase {
     function test_example() {
       print 'in test';
     }
