@@ -37,3 +37,12 @@
       require $view_base_path.implode(DIRECTORY_SEPARATOR, $view).'.php';
     };
   }
+
+  /**
+   * Checks if the haystack ends with the provided needle.
+   */
+  function ends_with(string $haystack, string $needle) {
+    $haystack_length = strlen($haystack);
+    $needle_length = strlen($needle);
+    return strrpos($haystack, $needle) === $haystack_length - $needle_length;
+  }
