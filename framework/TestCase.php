@@ -19,6 +19,7 @@
 
   class TestCase {
     private $expected_exception = null;
+    private $assertions = [];
 
     function expect_exception(?string $type = null) {
       if ($type !== null) {
@@ -31,6 +32,7 @@
 
     private function reset_for_next_test() {
       $this->expected_exception = null;
+      $this->assertions = [];
     }
 
     function before_test() { }
@@ -38,8 +40,8 @@
     function before_test_suite() { }
     function after_test_suite() { }
 
-    function assert($condition) {
-
+    function assert($condition, string $failed_message = '') {
+      $this->assertions[] = [$condition, $failed_message];
     }
 
     function run() {
@@ -57,6 +59,11 @@
         return;
       }
 
+      $result = [
+        'test_count' => 0,
+        'assertion_count' => 0,
+      ];
+
       $this->before_test_suite();
 
       foreach ($tests as $test) {
@@ -64,10 +71,24 @@
 
         $this->reset_for_next_test();
 
+        $failed_assertion_messages = [];
+
         try {
           $test->invoke($this);
+          foreach ($this->assertions as $assertion) {
+            if (!$assertion[0]) {
+              $failed_assertion_messages[] = $assertion[1];
+            }
+          }
         } catch (\Throwable $ex) {
-          // 
+          if ($this->expected_exception === null) {
+            $exception_type = gettype($ex);
+            $failed_assertion_messages[] = "Encountered unexpected exception of type {$exception_type}!";
+          } else {
+            if (!is_a($ex, $this->expected_exception)) {
+
+            }
+          }
         }
 
         $this->after_test();
