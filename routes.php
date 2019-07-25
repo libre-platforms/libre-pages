@@ -22,6 +22,10 @@
     return $response->write('moin');
   });
 
+  $router->get('/foo', function($request, $response) {
+    return $response->write('bar');
+  });
+
   $router->group('/grp', function (Router $router) {
     $router->get('/bla', function(Request $request, Response $response) {
       return $response->write('bla');
