@@ -35,7 +35,7 @@
   $assertion_failed_count = 0;
 
   foreach ($test_results as $suite => $tests) {
-    print 'Results fo suite '.$suite.':'.PHP_EOL;
+    print 'Results for suite '.$suite.':'.PHP_EOL;
     foreach ($tests as $test_name => $assertions) {
       ++$test_count;
       $test_failed = false;
