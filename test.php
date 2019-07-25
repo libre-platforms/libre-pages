@@ -45,6 +45,7 @@
         if ($success) {
           continue;
         }
+        ++$assertion_failed_count;
         $test_failed = true;
         $fail_messages[] = "    {$failed_message} Line {$trace['line']}".PHP_EOL;
       }
@@ -66,7 +67,11 @@
 
   print PHP_EOL.PHP_EOL;
 
-  $test_succees_count = $test_count - $test_failed_count;
-  $test_success_rate = round($test_succees_count / $test_count * 10000) / 100;
+  $test_success_count = $test_count - $test_failed_count;
+  $test_success_rate = round($test_success_count / $test_count * 10000) / 100;
 
-  print "Tests run: {$test_count}; tests succeeded: {$test_succees_count}; success rate: {$test_success_rate}%".PHP_EOL;
+  $assertion_success_count = $assertion_count - $assertion_failed_count;
+  $assertion_success_rate = round($assertion_success_count / $assertion_count * 10000) / 100;
+
+  print "Tests run: {$test_count}; tests succeeded: {$test_success_count}; success rate: {$test_success_rate}%".PHP_EOL;
+  print "Assertions done: {$assertion_count}; assertions succeeded: {$assertion_success_count}; success rate: {$assertion_success_rate}%".PHP_EOL;
