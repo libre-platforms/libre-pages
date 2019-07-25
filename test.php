@@ -29,4 +29,31 @@
 
   $test_results = array_reduce($test_suites_classes, function($accu, $test_class){ $accu[$test_class] = (new $test_class)->run(); return $accu; }, []);
 
-  var_dump($test_results);
+  $test_count = 0;
+  $test_failed_count = 0;
+  $assertion_count = 0;
+  $assertion_failed_count = 0;
+
+  foreach ($test_results as $suite => $tests) {
+    print 'Results fo suite '.$suite.':'.PHP_EOL;
+    foreach ($tests as $test_name => $assertions) {
+      print '  '.$test_name.PHP_EOL;
+      ++$test_count;
+      $test_failed = false;
+      $assertion_count += count($assertions);
+      foreach ($assertions as [$success, $failed_message, $trace]) {
+        if (!$success) {
+          $test_failed = true;
+        }
+      }
+
+      if ($test_failed) {
+        ++$test_failed_count;
+      }
+    }
+  }
+
+  $test_succees_count = $test_count - $test_failed_count;
+  $test_success_rate = round($test_succees_count / $test_count * 100, 2);
+
+  print "Tests run: {$test_count}; tests succeeded: {$test_succees_count}; success rate: {$test_success_rate}%".PHP_EOL;
