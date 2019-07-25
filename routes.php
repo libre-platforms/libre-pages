@@ -26,6 +26,10 @@
     return $response->write('bar');
   });
 
+  $router->get('/foo/{bla}', function($request, $response) {
+    return $response->write($request->params['bla']);
+  });
+
   $router->group('/grp', function (Router $router) {
     $router->get('/bla', function(Request $request, Response $response) {
       return $response->write('bla');
