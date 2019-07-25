@@ -37,23 +37,34 @@
   foreach ($test_results as $suite => $tests) {
     print 'Results fo suite '.$suite.':'.PHP_EOL;
     foreach ($tests as $test_name => $assertions) {
-      print '  '.$test_name.PHP_EOL;
       ++$test_count;
       $test_failed = false;
       $assertion_count += count($assertions);
+      $fail_messages = [];
       foreach ($assertions as [$success, $failed_message, $trace]) {
-        if (!$success) {
-          $test_failed = true;
+        if ($success) {
+          continue;
         }
+        $test_failed = true;
+        $fail_messages[] = "    {$failed_message} Line {$trace['line']}".PHP_EOL;
       }
 
-      if ($test_failed) {
+      print '  '.$test_name.' ';
+
+      if (!$test_failed) {
+        print 'passed'.PHP_EOL;
+      } else {
+        print 'fails'.PHP_EOL;
         ++$test_failed_count;
+        foreach ($fail_messages as $fail) {
+          print $fail;
+        }
+        print PHP_EOL;
       }
     }
   }
 
   $test_succees_count = $test_count - $test_failed_count;
-  $test_success_rate = round($test_succees_count / $test_count * 100, 2);
+  $test_success_rate = round($test_succees_count / $test_count * 10000) / 100;
 
   print "Tests run: {$test_count}; tests succeeded: {$test_succees_count}; success rate: {$test_success_rate}%".PHP_EOL;
