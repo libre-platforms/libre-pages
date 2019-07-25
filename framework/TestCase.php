@@ -23,11 +23,11 @@
 
     function expect_exception(?string $type = null) {
       if ($type !== null) {
-        if (!is_a($type, \Throwable::class)) {
+        if (!is_subclass_of($type, \Throwable::class)) {
           throw new \Exception('You may only expect exceptions of types derived by \\Throwable!');
         }
       }
-      $this->expected_exception = $type;
+      $this->expected_exception = [$type, debug_backtrace()[0]];
     }
 
     private function reset_for_next_test() {
@@ -41,10 +41,11 @@
     function after_test_suite() { }
 
     function assert($condition, string $failed_message = '') {
-      $this->assertions[] = [$condition, $failed_message];
+      $trace = debug_backtrace()[0];
+      $this->assertions[] = [$condition, $failed_message, $trace];
     }
 
-    function run() {
+    private function get_tests() {
       $ref = new \ReflectionObject($this);
       $methods = $ref->getMethods();
       $tests = [];
@@ -55,45 +56,54 @@
         }
       }
 
+      return $tests;
+    }
+
+    function run() {
+      $tests = $this->get_tests();
+      $suite_result = [];
+
       if (count($tests) === 0) {
         return;
       }
 
-      $result = [
-        'test_count' => 0,
-        'assertion_count' => 0,
-      ];
-
       $this->before_test_suite();
 
       foreach ($tests as $test) {
+        $test_result = [];
+
         $this->before_test();
 
         $this->reset_for_next_test();
 
-        $failed_assertion_messages = [];
-
         try {
           $test->invoke($this);
-          foreach ($this->assertions as $assertion) {
-            if (!$assertion[0]) {
-              $failed_assertion_messages[] = $assertion[1];
-            }
+
+          if ($this->expected_exception !== null) {
+            $exception_type = $this->expected_exception[0];
+            $expected_trace = $this->expected_exception[1];
+            $test_result[] = [false, "Missing Exception! Expected exception of type {$exception_type}!", $expected_trace];
+          } else {
+            $test_result = $this->assertions;
           }
         } catch (\Throwable $ex) {
+          $exception_type = get_class($ex);
           if ($this->expected_exception === null) {
-            $exception_type = gettype($ex);
-            $failed_assertion_messages[] = "Encountered unexpected exception of type {$exception_type}!";
+            $test_result[] = [false, "Encountered unexpected exception of type {$exception_type}!", null];
           } else {
-            if (!is_a($ex, $this->expected_exception)) {
-
+            if (!is_subclass_of($ex, $this->expected_exception[0])) {
+              $test_result[] = [false, "Mismatched exception type! Expected {$this->expected_exception[0]} but got {$exception_type}!", $this->expected_exception[0]];
             }
           }
         }
 
         $this->after_test();
+
+        $suite_result[$test->name] = $test_result;
       }
 
       $this->after_test_suite();
+
+      return $suite_result;
     }
   }
