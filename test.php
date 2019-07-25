@@ -23,12 +23,10 @@
 
   foreach ($files as $file) {
     if (Framework\ends_with($file, '.php')) {
-      $test_suites_classes[] = substr($file, 0, strlen($file) - 4);
+      $test_suites_classes[] = 'Tests\\'.substr($file, 0, strlen($file) - 4);
     }
   }
 
-  foreach ($test_suites_classes as $test_suites_class) {
-    $class_name = 'Tests\\'.$test_suites_class;
-    $test_suite = new $class_name();
-    $test_suite->run();
-  }
+  $test_results = array_reduce($test_suites_classes, function($accu, $test_class){ $accu[$test_class] = (new $test_class)->run(); return $accu; }, []);
+
+  var_dump($test_results);
