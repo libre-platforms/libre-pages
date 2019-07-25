@@ -209,10 +209,8 @@
             }
             $params[$param] = \substr($path, $i_path);
           }
-        } else {
-          if ($path[$i_path] !== $route[$i_route]) {
-            return false;
-          }
+        } else if ($path[$i_path] !== $route[$i_route]) {
+          return false;
         }
       }
 
