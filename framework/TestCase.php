@@ -21,30 +21,63 @@
     private $expected_exception = null;
     private $assertions = [];
 
-    function expect_exception(?string $type = null) {
-      if ($type !== null) {
-        if (!is_subclass_of($type, \Throwable::class)) {
-          throw new \Exception('You may only expect exceptions of types derived by \\Throwable!');
-        }
+    /**
+     * Expectes an assertion to be thrown in the current test.
+     * 
+     * @param string $type The class type of the exception which is expected to be thrown.
+     */
+    function expect_exception(string $type = \Exception::class) {
+      if (!is_subclass_of($type, \Throwable::class)) {
+        throw new \Exception('You may only expect exceptions of types derived by \\Throwable!');
       }
       $this->expected_exception = [$type, debug_backtrace()[0]];
     }
 
+    /**
+     * Resets the internal state of the test suite, to prepare it for the next test to be run.
+     */
     private function reset_for_next_test() {
       $this->expected_exception = null;
       $this->assertions = [];
     }
 
+    /**
+     * Runs before every test in the suite is run.
+     * This method may be used to perform testing setup.
+     */
     function before_test() { }
+
+    /**
+     * Runs after every test in the suite is run.
+     * This method may be used to perform test clean up.
+     */
     function after_test() { }
+
+    /**
+     * Runs before before the test suite is run.
+     */
     function before_test_suite() { }
+
+    /**
+     * Runs after the test suite has run.
+     */
     function after_test_suite() { }
 
+    /**
+     * Asserts the given condition to evaluate to true.
+     * 
+     * @param string $failed_message The message to be displayed, if the assertion fails.
+     */
     function assert($condition, string $failed_message = '') {
       $trace = debug_backtrace()[0];
       $this->assertions[] = [$condition, $failed_message, $trace];
     }
 
+    /**
+     * Retrieves all available test methods the the current test suite.
+     * 
+     * @return array
+     */
     private function get_tests() {
       $ref = new \ReflectionObject($this);
       $methods = $ref->getMethods();
@@ -59,6 +92,11 @@
       return $tests;
     }
 
+    /**
+     * Runs the current test suite and returns a collection of the run tests and the result of their assertions.
+     * 
+     * @return array
+     */
     function run() {
       $tests = $this->get_tests();
       $suite_result = [];
@@ -91,7 +129,7 @@
           if ($this->expected_exception === null) {
             $test_result[] = [false, "Encountered unexpected exception of type {$exception_type}!", null];
           } else {
-            if (!is_subclass_of($ex, $this->expected_exception[0])) {
+            if (!is_a($ex, $this->expected_exception[0])) {
               $test_result[] = [false, "Mismatched exception type! Expected {$this->expected_exception[0]} but got {$exception_type}!", $this->expected_exception[0]];
             }
           }
