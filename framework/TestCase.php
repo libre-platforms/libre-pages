@@ -102,7 +102,7 @@
       $suite_result = [];
 
       if (count($tests) === 0) {
-        return;
+        return $suite_result;
       }
 
       $this->before_test_suite();
