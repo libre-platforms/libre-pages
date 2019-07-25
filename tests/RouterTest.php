@@ -28,11 +28,13 @@
         ['/', '/', []],
         ['/hello', '/world', false],
         ['/hello', '/hello', []],
+        ['/hello', '/{moin}', ['moin' => 'hello']],
+        ['/world/hello', '/world/{moin}', ['moin' => 'hello']],
       ];
 
       foreach ($data as [$path, $route, $actual_match]) {
         $match = Router::match_path_to_route($path, $route);
-        $this->assert($match === $actual_match, "Expected path '{$path}' and route '{$route}' to match!");
+        $this->assert($match === $actual_match, "Expected path '{$path}' and route '{$route}' to match! Match was: ".json_encode($match).';');
       }
     }
   }
