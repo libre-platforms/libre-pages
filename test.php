@@ -64,6 +64,8 @@
     }
   }
 
+  print PHP_EOL.PHP_EOL;
+
   $test_succees_count = $test_count - $test_failed_count;
   $test_success_rate = round($test_succees_count / $test_count * 10000) / 100;
 
