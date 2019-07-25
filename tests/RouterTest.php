@@ -18,8 +18,21 @@
 
   namespace Tests;
 
-  use Framework\TestCase;
+  use Framework\{
+    TestCase, Router
+  };
 
   class RouterTest extends TestCase {
-    
+    function test_match_path_to_route() {
+      $data = [
+        ['/', '/', true],
+        ['/hello', '/world', false],
+        ['/hello', '/hello', true],
+      ];
+
+      foreach ($data as [$path, $route, $should_match]) {
+        $does_match = Router::match_path_to_route($path, $route) !== false;
+        $this->assert($does_match === $should_match, "Expected path '{$path}' and route '{$route}' to match!");
+      }
+    }
   }
