@@ -23,19 +23,37 @@
   };
 
   class RouterTest extends TestCase {
-    private $data = [
-      ['/', '/', []],
-      ['/hello', '/world', false],
-      ['/hello', '/hello', []],
-      ['/hello', '/{moin}', ['moin' => 'hello']],
-      ['/world/hello', '/world/{moin}', ['moin' => 'hello']],
-      ['/world/a-hello', '/world/a-{moin}', ['moin' => 'hello']],
-    ];
+    private $data;
+
+    function before_test_suite() {
+      $this->data = [
+        ['/', '/', [], function() { }],
+        ['/hello', '/world', false, function() { }],
+        ['/hello', '/hello', [], function() { }],
+        ['/hello', '/{moin}', ['moin' => 'hello'], function() { }],
+        ['/world/hello', '/world/{moin}', ['moin' => 'hello'], function() { }],
+        ['/world/a-hello', '/world/a-{moin}', ['moin' => 'hello'], function() { }],
+      ];
+    }
 
     function test_match_path_to_route() {
       foreach ($this->data as [$path, $route, $actual_match]) {
         $match = Router::match_path_to_route($path, $route);
         $this->assert($match === $actual_match, "Expected path '{$path}' and route '{$route}' to match! Match was: ".json_encode($match).';');
+      }
+    }
+
+    function test_router_get() {
+      $router = new Router();
+      $handler = function() { };
+
+      foreach ($this->data as [$path, $route, $actual_match, $handler]) {
+        if ($actual_match === false) {
+          continue;
+        }
+        $router->get($route, $handler);
+        $resolved_handler = $router->get_handler('GET', $path);
+        $this->assert($handler === $resolved_handler, 'Got wrong route handler!');
       }
     }
   }
