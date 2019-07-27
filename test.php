@@ -75,3 +75,7 @@
 
   print "Tests run: {$test_count}; tests succeeded: {$test_success_count}; success rate: {$test_success_rate}%".PHP_EOL;
   print "Assertions done: {$assertion_count}; assertions succeeded: {$assertion_success_count}; success rate: {$assertion_success_rate}%".PHP_EOL;
+
+  if ($test_failed_count > 0) {
+    exit(1);
+  }
