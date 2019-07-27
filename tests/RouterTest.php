@@ -23,16 +23,17 @@
   };
 
   class RouterTest extends TestCase {
-    function test_match_path_to_route() {
-      $data = [
-        ['/', '/', []],
-        ['/hello', '/world', false],
-        ['/hello', '/hello', []],
-        ['/hello', '/{moin}', ['moin' => 'hello']],
-        ['/world/hello', '/world/{moin}', ['moin' => 'hello']],
-      ];
+    private $data = [
+      ['/', '/', []],
+      ['/hello', '/world', false],
+      ['/hello', '/hello', []],
+      ['/hello', '/{moin}', ['moin' => 'hello']],
+      ['/world/hello', '/world/{moin}', ['moin' => 'hello']],
+      ['/world/a-hello', '/world/a-{moin}', ['moin' => 'hello']],
+    ];
 
-      foreach ($data as [$path, $route, $actual_match]) {
+    function test_match_path_to_route() {
+      foreach ($this->data as [$path, $route, $actual_match]) {
         $match = Router::match_path_to_route($path, $route);
         $this->assert($match === $actual_match, "Expected path '{$path}' and route '{$route}' to match! Match was: ".json_encode($match).';');
       }
