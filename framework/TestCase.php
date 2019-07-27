@@ -68,7 +68,7 @@
      * 
      * @param string $failed_message The message to be displayed, if the assertion fails.
      */
-    function assert($condition, string $failed_message = '') {
+    function assert($condition, string $failed_message = 'Assertion failed!') {
       $trace = debug_backtrace()[0];
       $this->assertions[] = [$condition, $failed_message, $trace];
     }
