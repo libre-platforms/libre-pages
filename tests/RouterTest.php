@@ -54,8 +54,9 @@
           continue;
         }
         $router->get($route, $handler);
-        $resolved_handler = $router->get_handler('GET', $path);
+        [$resolved_handler, $match] = $router->get_handler('GET', $path);
         $this->assert($handler === $resolved_handler, 'Got wrong route handler!');
+        $this->assert($match === $actual_match, 'Got mismatch in route parameters!');
       }
     }
   }
