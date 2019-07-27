@@ -137,7 +137,10 @@
       }
 
       foreach ($this->_groups as $group) {
-        return $group->get_router()->get_handler($method, $path);
+        $group_handler = $group->get_router()->get_handler($method, $path);
+        if ($group_handler) {
+          return $group_handler;
+        }
       }
     }
 
