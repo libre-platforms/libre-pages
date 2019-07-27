@@ -33,6 +33,8 @@
         ['/hello', '/{moin}', ['moin' => 'hello'], function() { }],
         ['/world/hello', '/world/{moin}', ['moin' => 'hello'], function() { }],
         ['/world/a-hello', '/world/a-{moin}', ['moin' => 'hello'], function() { }],
+        ['/world/a-hello', '/world/a-{moin:\d+}', false, function() { }],
+        ['/world/a-hello', '/world/{moin:[a-z]{4}}', ['moin' => 'fooo'], function() { }],
       ];
     }
 
