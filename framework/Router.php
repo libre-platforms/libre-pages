@@ -191,7 +191,7 @@
               return false;
             } else {
               $param_value = $matches[0];
-              $i_path += strlen($param_value) - 1;
+              $i_path += strlen($param_value);
               $params[$param_name] = $param_value;
             }
           } else {
@@ -200,17 +200,13 @@
                 break;
               }
             }
-            if ($i_path + $j === $path_length) {
-              if (isset($route[$i_route + 1])) {
-                if ($route[$i_route + 1] === '/') {
-                  return false;
-                }
-              }
-            }
-            $params[$param] = \substr($path, $i_path);
+            $params[$param] = \substr($path, $i_path, $j);
+            $i_path += $j - 1;
           }
         } else if ($path[$i_path] !== $route[$i_route]) {
           return false;
+        } else {
+          // wait for the loop to check the next character
         }
       }
 
