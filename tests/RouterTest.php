@@ -49,14 +49,14 @@
       $router = new Router();
       $handler = function() { };
 
-      foreach ($this->data as [$path, $route, $actual_match, $handler]) {
-        if ($actual_match === false) {
+      foreach ($this->data as [$path, $route, $expected_match, $handler]) {
+        if ($expected_match === false) {
           continue;
         }
         $router->get($route, $handler);
         [$resolved_handler, $match] = $router->get_handler('GET', $path);
-        $this->assert($handler === $resolved_handler, 'Got wrong route handler!');
-        $this->assert($match === $actual_match, 'Got mismatch in route parameters!');
+        $this->assert($handler === $resolved_handler, 'Got wrong route handler! recieved '.($resolved_handler === null ? '' : 'non ').'null handler');
+        $this->assert($match === $expected_match, 'Got mismatch in route parameters! Expected parameters: '.json_encode($expected_match).'; got: '.json_encode($match));
       }
     }
 
