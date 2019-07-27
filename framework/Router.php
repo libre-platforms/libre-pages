@@ -160,6 +160,7 @@
         }
 
         if ($i_path >= $path_length || $i_route >= $route_length) {
+          // var_dump($path[$i_path - 1].' '.$route[$i_route - 1].' -> '.$path.' '.$route);
           return false;
         }
 
@@ -191,7 +192,7 @@
               return false;
             } else {
               $param_value = $matches[0];
-              $i_path += strlen($param_value);
+              $i_path += strlen($param_value) - 1;
               $params[$param_name] = $param_value;
             }
           } else {
