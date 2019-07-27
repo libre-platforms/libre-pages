@@ -59,4 +59,28 @@
         $this->assert($match === $actual_match, 'Got mismatch in route parameters!');
       }
     }
+
+    function test_returns_proper_handler_of_first_group() {
+      $handler = function() { };
+      $router = new Router();
+      $router->group('/group', function($router) use ($handler) {
+        $router->get('/foo', $handler);
+      });
+      [$resolved_handler] = $router->get_handler('GET', '/group/foo');
+      $this->assert($resolved_handler === $handler);
+    }
+
+    function test_returns_proper_handler_of_second_group() {
+      $handler = function() { };
+      $router = new Router();
+      $router->group('/group', function($router) use ($handler) {
+        
+      });
+
+      $router->group('/bar', function($router) use ($handler) {
+        $router->get('/foo', $handler);
+      });
+      [$resolved_handler] = $router->get_handler('GET', '/bar/foo');
+      $this->assert($resolved_handler === $handler);
+    }
   }
