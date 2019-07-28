@@ -30,9 +30,13 @@
         ['/', '/', [], function() { }],
         ['/hello', '/world', false, function() { }],
         ['/hello', '/hello', [], function() { }],
+        ['/hello/world', '/hello/world', [], function() { }],
+        ['/hello/foo', '/hello/world', false, function() { }],
         ['/hello', '/{moin}', ['moin' => 'hello'], function() { }],
+        ['/bar', '/{foo}', ['foo' => 'bar'], function() { }],
         ['/world/hello', '/world/{moin}', ['moin' => 'hello'], function() { }],
         ['/world/a-hello', '/world/a-{moin}', ['moin' => 'hello'], function() { }],
+        ['/world/hello-b', '/world/{moin}-b', ['moin' => 'hello'], function() { }],
         ['/world/a-hello', '/world/a-{moin:\d+}', false, function() { }],
         ['/world/fooo', '/world/{moin:[a-z]{4}}', ['moin' => 'fooo'], function() { }],
       ];
