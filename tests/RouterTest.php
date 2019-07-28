@@ -56,7 +56,7 @@
         $router->get($route, $handler);
         [$resolved_handler, $match] = $router->get_handler('GET', $path);
         $this->assert($handler === $resolved_handler, 'Got wrong route handler! recieved '.($resolved_handler === null ? '' : 'non ').'null handler');
-        $this->assert($match === $expected_match, 'Got mismatch in route parameters! Expected parameters: '.json_encode($expected_match).'; got: '.json_encode($match));
+        $this->assert($match === $expected_match, 'Got mismatch in route parameters! Expected parameters: '.json_encode($expected_match).'; got: '.json_encode($match).'; route: '.$route.'; path: '.$path);
       }
     }
 
@@ -82,5 +82,10 @@
       });
       [$resolved_handler] = $router->get_handler('GET', '/bar/foo');
       $this->assert($resolved_handler === $handler);
+    }
+
+    function test_expect_missing_closing_route_to_throw() {
+      $this->expect_exception(\Exception::class);
+      Router::match_path_to_route('/hello', '/{moin');
     }
   }
