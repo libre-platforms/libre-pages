@@ -36,6 +36,9 @@ The script `test.php` can be considered a simple test runner.
 
 By adding the `--color` option to the command, the test result (__success__/__pass__ or __fail__) will be highlighted.
 
+You can also run all tests automatically on file, if you use the script `test-watch.sh`.
+__Note:__ This script requires `inotifywait` in order to watch for file changes.
+So, make sure `inotify-tools` is installed on your machine.
 
 #### before_test()
 This method is executed before every test.
