@@ -34,6 +34,8 @@ Therefore, they will be executed in order of declaration (in case test order tha
 To run all your tests, just use `php test.php`.
 The script `test.php` can be considered a simple test runner.
 
+By adding the `--color` option to the command, the test result (__success__/__pass__ or __fail__) will be highlighted.
+
 
 #### before_test()
 This method is executed before every test.
