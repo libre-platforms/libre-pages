@@ -15,6 +15,25 @@
 //
 //  You should have received a copy of the GNU Affero General Public License
 //  along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
+
+  $use_color = in_array('--color', $argv);
+
+  class PrintColor {
+    const red = "\033[0;31m";
+    const green = "\033[0;32m";
+    const yellow = "\033[1;33m";
+    const no_color = "\033[0m";
+  }
+
+  function report_print(string $text, $color) {
+    global $use_color;
+    if ($use_color) {
+      print $color.$text.PrintColor::no_color;
+    } else {
+      print $text;
+    }
+  }
+
   require_once __DIR__.DIRECTORY_SEPARATOR.'autoload.php';
   require_once __DIR__.DIRECTORY_SEPARATOR.'framework'.DIRECTORY_SEPARATOR.'functions.php';
 
@@ -50,12 +69,12 @@
         $fail_messages[] = "    {$failed_message} Line {$trace['line']}".PHP_EOL;
       }
 
-      print '  '.$test_name.' ';
+      print '  '.$test_name;
 
       if (!$test_failed) {
-        print 'passed'.PHP_EOL;
+        report_print(' passed'.PHP_EOL, PrintColor::green);
       } else {
-        print 'fails'.PHP_EOL;
+        report_print(' fails'.PHP_EOL, PrintColor::red);
         ++$test_failed_count;
         foreach ($fail_messages as $fail) {
           print $fail;
