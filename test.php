@@ -46,7 +46,12 @@
     }
   }
 
+  $time_before_tests = microtime(1);
+
   $test_results = array_reduce($test_suites_classes, function($accu, $test_class){ $accu[$test_class] = (new $test_class)->run(); return $accu; }, []);
+
+  $time_after_tests = microtime(1);
+  $time_passed_during_testing = $time_after_tests - $time_before_tests;
 
   $test_count = 0;
   $test_failed_count = 0;
@@ -100,6 +105,7 @@
 
   print "Tests run: {$test_count}; tests succeeded: {$test_success_count}; success rate: {$test_success_rate}%".PHP_EOL;
   print "Assertions done: {$assertion_count}; assertions succeeded: {$assertion_success_count}; success rate: {$assertion_success_rate}%".PHP_EOL;
+  print (floor($time_passed_during_testing * 10000) / 10000).' seconds passed'.PHP_EOL;
 
   if ($test_failed_count > 0) {
     exit(1);
