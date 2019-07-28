@@ -92,6 +92,12 @@
   $assertion_success_count = $assertion_count - $assertion_failed_count;
   $assertion_success_rate = round($assertion_success_count / $assertion_count * 10000) / 100;
 
+  if ($test_failed_count > 0) {
+    report_print('TESTS FAILED!'.PHP_EOL, PrintColor::red);
+  } else {
+    report_print('TESTS SUCCEEDED!'.PHP_EOL, PrintColor::green);
+  }
+
   print "Tests run: {$test_count}; tests succeeded: {$test_success_count}; success rate: {$test_success_rate}%".PHP_EOL;
   print "Assertions done: {$assertion_count}; assertions succeeded: {$assertion_success_count}; success rate: {$assertion_success_rate}%".PHP_EOL;
 
