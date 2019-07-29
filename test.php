@@ -52,6 +52,7 @@
 
   $time_after_tests = microtime(1);
   $time_passed_during_testing = $time_after_tests - $time_before_tests;
+  $ms_passed_during_testing = floor($time_passed_during_testing * 1000);
 
   $test_count = 0;
   $test_failed_count = 0;
@@ -111,7 +112,12 @@
 
   print "Tests run: {$test_count}; tests succeeded: {$test_success_count}; success rate: {$test_success_rate}%".PHP_EOL;
   print "Assertions done: {$assertion_count}; assertions succeeded: {$assertion_success_count}; success rate: {$assertion_success_rate}%".PHP_EOL;
-  print (floor($time_passed_during_testing * 10000) / 10000).' seconds passed'.PHP_EOL;
+  if ($ms_passed_during_testing < 100) {
+    print $ms_passed_during_testing.' m';
+  } else {
+    print ($ms_passed_during_testing * 1000).'passed';
+  }
+  print 's passed'.PHP_EOL;
 
   if ($test_failed_count > 0) {
     exit(1);
