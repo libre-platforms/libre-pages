@@ -42,27 +42,27 @@
         ['/world/a-hello', '/world/a-{moin:\d+}', false, function() { }],
         ['/world/fooo', '/world/{moin:[a-z]{4}}', ['moin' => 'fooo'], function() { }],
       ];
+
+      $matching_data = array_filter($this->data, function($set) {
+        return $set[2] !== false;
+      });
+
+      $this->parameterized('test_router_get', $matching_data);
+      $this->parameterized('test_match_path_to_route', $this->data);
     }
 
-    function test_match_path_to_route() {
-      foreach ($this->data as [$path, $route, $actual_match]) {
-        $match = Router::match_path_to_route($path, $route);
-        $this->assert($match === $actual_match, "Expected path '{$path}' and route '{$route}' to match! Match was: ".json_encode($match).';');
-      }
+    function test_match_path_to_route($path, $route, $actual_match) {
+      $match = Router::match_path_to_route($path, $route);
+      $this->assert($match === $actual_match, "Expected path '{$path}' and route '{$route}' to match! Match was: ".json_encode($match).';');
     }
 
-    function test_router_get() {
-      foreach ($this->data as [$path, $route, $expected_match, $handler]) {
-        $router = new Router();
+    function test_router_get($path, $route, $expected_match, $handler) {
+      $router = new Router();
 
-        if ($expected_match === false) {
-          continue;
-        }
-        $router->get($route, $handler);
-        [$resolved_handler, $match] = $router->get_handler('GET', $path);
-        $this->assert($handler === $resolved_handler, 'Got wrong route handler! recieved '.($resolved_handler === null ? '' : 'non ').'null handler');
-        $this->assert($match === $expected_match, 'Got mismatch in route parameters! Expected parameters: '.json_encode($expected_match).'; got: '.json_encode($match).'; route: '.$route.'; path: '.$path);
-      }
+      $router->get($route, $handler);
+      [$resolved_handler, $match] = $router->get_handler('GET', $path);
+      $this->assert($handler === $resolved_handler, 'Got wrong route handler! recieved '.($resolved_handler === null ? '' : 'non ').'null handler');
+      $this->assert($match === $expected_match, 'Got mismatch in route parameters! Expected parameters: '.json_encode($expected_match).'; got: '.json_encode($match).'; route: '.$route.'; path: '.$path);
     }
 
     function test_returns_proper_handler_of_first_group() {
