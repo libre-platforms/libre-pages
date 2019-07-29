@@ -39,6 +39,39 @@ class ValidationTest extends TestCase {
   function test_marks_missing_body_field() {
     $val = Validation::body('foo');
     $val($this->request, $this->response, $this->dummy_next);
-    $this->assert(isset($this->request->validation_errors['foo']), 'Expected missing field to be present in validation errors!');
+    $this->assert(isset($this->request->validation_errors['foo']), 'Expected missing body field to be present in validation errors!');
+  }
+
+  function test_does_not_mark_present_body_field() {
+    $val = Validation::body('foo');
+    $this->request->body['foo'] = 'bar';
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(!isset($this->request->validation_errors['foo']), 'Expected present body field not to be marked in the validation errors!');
+  }
+
+  function test_marks_missing_param_field() {
+    $val = Validation::param('foo');
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(isset($this->request->validation_errors['foo']), 'Expected missing param field to be present in validation errors!');
+  }
+
+  function test_does_not_mark_present_param_field() {
+    $val = Validation::param('foo');
+    $this->request->params['foo'] = 'bar';
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(!isset($this->request->validation_errors['foo']), 'Expected present param field not to be marked in the validation errors!');
+  }
+
+  function test_marks_missing_query_field() {
+    $val = Validation::query('foo');
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(isset($this->request->validation_errors['foo']), 'Expected missing query field to be present in validation errors!');
+  }
+
+  function test_does_not_mark_present_query_field() {
+    $val = Validation::query('foo');
+    $this->request->query['foo'] = 'bar';
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(!isset($this->request->validation_errors['foo']), 'Expected present query field not to be marked in the validation errors!');
   }
 }
