@@ -25,12 +25,20 @@ use Framework\{
 class ValidationTest extends TestCase {
   private $request;
   private $response;
+  private $dummy_next;
 
   function before_test_suite() {
     $this->response = new Response();
+    $this->dummy_next = function() { };
   }
 
   function before_test() {
     $this->request = new Request();
+  }
+
+  function test_marks_missing_body_field() {
+    $val = Validation::body('foo');
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(isset($this->request->validation_errors['foo']), 'Expected missing field to be present in validation errors!');
   }
 }
