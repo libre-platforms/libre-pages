@@ -74,4 +74,18 @@ class ValidationTest extends TestCase {
     $val($this->request, $this->response, $this->dummy_next);
     $this->assert(!isset($this->request->validation_errors['foo']), 'Expected present query field not to be marked in the validation errors!');
   }
+
+  function test_valid_string_passes() {
+    $val = Validation::body('foo')->is_string();
+    $this->request->body['foo'] = 'bar';
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(!isset($this->request->validation_errors['foo']), 'Expected valid field not to be marked in the validation errors!');
+  }
+
+  function test_invalid_string_fails() {
+    $val = Validation::body('foo')->is_string();
+    $this->request->body['foo'] = 1;
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(isset($this->request->validation_errors['foo']), 'Expected invalid field to be marked in the validation errors!');
+  }
 }
