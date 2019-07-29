@@ -57,8 +57,8 @@
     /** @var array $query */
     public $query = [];
 
-    /** @var string $body */
-    public $body = '';
+    /** @var array $body */
+    public $body = [];
 
     /** @var array $validation_errors */
     public $validation_errors = [];
