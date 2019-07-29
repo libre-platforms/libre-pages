@@ -20,17 +20,18 @@
   class TestCase {
     private $expected_exception = null;
     private $assertions = [];
+    private $parameterized_tests = [];
 
     /**
      * Expectes an assertion to be thrown in the current test.
      * 
      * @param string $type The class type of the exception which is expected to be thrown.
      */
-    function expect_exception(string $type = \Exception::class) {
+    function expect_exception(string $type, string $message = 'Expected Exception!') {
       if (!is_subclass_of($type, \Throwable::class)) {
         throw new \Exception('You may only expect exceptions of types derived by \\Throwable!');
       }
-      $this->expected_exception = [$type, debug_backtrace()[0]];
+      $this->expected_exception = [$type, $message];
     }
 
     /**
@@ -69,8 +70,11 @@
      * @param string $failed_message The message to be displayed, if the assertion fails.
      */
     function assert($condition, string $failed_message = 'Assertion failed!') {
-      $trace = debug_backtrace()[0];
-      $this->assertions[] = [$condition, $failed_message, $trace];
+      $this->assertions[] = [$condition, $failed_message];
+    }
+
+    function parameterized(string $test_name, array $data) {
+      $this->parameterized_tests[$test_name] = $data;
     }
 
     /**
@@ -101,6 +105,27 @@
       $tests = $this->get_tests();
       $suite_result = [];
 
+      $run_test = function($test, $args = []) {
+        try {
+          $test->invoke($this, ...$args);
+
+          if ($this->expected_exception !== null) {
+            return [false, "Missing Exception! Expected exception of type {$this->expected_exception[0]}!"];
+          } else {
+            return;
+          }
+        } catch (\Throwable $ex) {
+          $exception_type = get_class($ex);
+          if ($this->expected_exception === null) {
+            return [false, "Encountered unexpected exception of type {$exception_type}! Message: {$ex->getMessage()};"];
+          } else {
+            if (!is_a($ex, $this->expected_exception[0])) {
+              return [false, "Mismatched exception type! Expected {$this->expected_exception[0]} but got {$exception_type}! Message: ".$this->expected_exception[1]];
+            }
+          }
+        }
+      };
+
       if (count($tests) === 0) {
         return $suite_result;
       }
@@ -108,34 +133,31 @@
       $this->before_test_suite();
 
       foreach ($tests as $test) {
-        $test_result = [];
-
-        $this->before_test();
-
         $this->reset_for_next_test();
-
-        try {
-          $test->invoke($this);
-
-          if ($this->expected_exception !== null) {
-            $exception_type = $this->expected_exception[0];
-            $expected_trace = $this->expected_exception[1];
-            $test_result[] = [false, "Missing Exception! Expected exception of type {$exception_type}!", $expected_trace];
+        $test_result = [];
+        if (isset($this->parameterized_tests[$test->name])) {
+          $data = $this->parameterized_tests[$test->name];
+          foreach ($data as $entry) {
+            $this->before_test();
+            $result_buffer = $run_test($test, $entry);
+            $this->after_test();
+            if ($result_buffer) {
+              $test_result[]  = $result_buffer;
+            } else {
+              $test_result = array_merge($test_result, $this->assertions);
+            }
+            $this->reset_for_next_test();
+          }
+        } else {
+          $this->before_test();
+          $result_buffer = $run_test($test);
+          $this->after_test();
+          if ($result_buffer) {
+            $test_result[] = $result_buffer;
           } else {
             $test_result = $this->assertions;
           }
-        } catch (\Throwable $ex) {
-          $exception_type = get_class($ex);
-          if ($this->expected_exception === null) {
-            $test_result[] = [false, "Encountered unexpected exception of type {$exception_type}! Message: {$ex->getMessage()};", $ex->getTrace()[0]];
-          } else {
-            if (!is_a($ex, $this->expected_exception[0])) {
-              $test_result[] = [false, "Mismatched exception type! Expected {$this->expected_exception[0]} but got {$exception_type}!", $this->expected_exception[0]];
-            }
-          }
         }
-
-        $this->after_test();
 
         $suite_result[$test->name] = $test_result;
       }
