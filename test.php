@@ -69,13 +69,13 @@
         $test_failed = false;
         $assertion_count += count($assertions);
         $fail_messages = [];
-        foreach ($assertions as [$success, $failed_message, $trace]) {
+        foreach ($assertions as [$success, $failed_message]) {
           if ($success) {
             continue;
           }
           ++$assertion_failed_count;
           $test_failed = true;
-          $fail_messages[] = "    {$failed_message} Line {$trace['line']}".PHP_EOL;
+          $fail_messages[] = "    {$failed_message}".PHP_EOL;
         }
   
         print '  '.$test_name;
