@@ -19,9 +19,18 @@
 namespace Tests;
 
 use Framework\{
-  TestCase, Validation
+  Request, Response, TestCase, Validation
 };
 
 class ValidationTest extends TestCase {
-  
+  private $request;
+  private $response;
+
+  function before_test_suite() {
+    $this->response = new Response();
+  }
+
+  function before_test() {
+    $this->request = new Request();
+  }
 }
