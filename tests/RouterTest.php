@@ -52,9 +52,9 @@
     }
 
     function test_router_get() {
-      $router = new Router();
-
       foreach ($this->data as [$path, $route, $expected_match, $handler]) {
+        $router = new Router();
+
         if ($expected_match === false) {
           continue;
         }
