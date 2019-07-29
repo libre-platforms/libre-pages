@@ -127,7 +127,7 @@
         } catch (\Throwable $ex) {
           $exception_type = get_class($ex);
           if ($this->expected_exception === null) {
-            $test_result[] = [false, "Encountered unexpected exception of type {$exception_type}! File: {$ex->getTrace()[0]['file']};", $ex->getTrace()[0]];
+            $test_result[] = [false, "Encountered unexpected exception of type {$exception_type}! Message: {$ex->getMessage()};", $ex->getTrace()[0]];
           } else {
             if (!is_a($ex, $this->expected_exception[0])) {
               $test_result[] = [false, "Mismatched exception type! Expected {$this->expected_exception[0]} but got {$exception_type}!", $this->expected_exception[0]];
