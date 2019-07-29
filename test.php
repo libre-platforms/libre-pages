@@ -60,31 +60,35 @@
 
   foreach ($test_results as $suite => $tests) {
     print 'Results for suite '.$suite.':'.PHP_EOL;
-    foreach ($tests as $test_name => $assertions) {
-      ++$test_count;
-      $test_failed = false;
-      $assertion_count += count($assertions);
-      $fail_messages = [];
-      foreach ($assertions as [$success, $failed_message, $trace]) {
-        if ($success) {
-          continue;
+    if ($tests === []) {
+      report_print('  Test suite is empty!'.PHP_EOL, PrintColor::yellow);
+    } else {
+      foreach ($tests as $test_name => $assertions) {
+        ++$test_count;
+        $test_failed = false;
+        $assertion_count += count($assertions);
+        $fail_messages = [];
+        foreach ($assertions as [$success, $failed_message, $trace]) {
+          if ($success) {
+            continue;
+          }
+          ++$assertion_failed_count;
+          $test_failed = true;
+          $fail_messages[] = "    {$failed_message} Line {$trace['line']}".PHP_EOL;
         }
-        ++$assertion_failed_count;
-        $test_failed = true;
-        $fail_messages[] = "    {$failed_message} Line {$trace['line']}".PHP_EOL;
-      }
-
-      print '  '.$test_name;
-
-      if (!$test_failed) {
-        report_print(' passed'.PHP_EOL, PrintColor::green);
-      } else {
-        report_print(' fails'.PHP_EOL, PrintColor::red);
-        ++$test_failed_count;
-        foreach ($fail_messages as $fail) {
-          print $fail;
+  
+        print '  '.$test_name;
+  
+        if (!$test_failed) {
+          report_print(' passed'.PHP_EOL, PrintColor::green);
+        } else {
+          report_print(' fails'.PHP_EOL, PrintColor::red);
+          ++$test_failed_count;
+          foreach ($fail_messages as $fail) {
+            print $fail;
+          }
+          print PHP_EOL;
         }
-        print PHP_EOL;
       }
     }
   }
