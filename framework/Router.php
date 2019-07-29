@@ -129,10 +129,10 @@
       $routes = $this->_routes[$method];
 
       foreach ($routes as $route) {
-        [$routePath, $routeHandler] = $route;
-        $matching_result = self::match_path_to_route($path, $routePath);
+        [$route_path, $route_handler] = $route;
+        $matching_result = self::match_path_to_route($path, $route_path);
         if ($matching_result !== false) {
-          return [$routeHandler, $matching_result];
+          return [$route_handler, $matching_result];
         }
       }
 
