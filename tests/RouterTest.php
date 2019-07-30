@@ -41,7 +41,7 @@
         ['/world/hello-b', '/world/{moin}-b', ['moin' => 'hello'], function() { }],
         ['/world/a-hello', '/world/a-{moin:\d+}', false, function() { }],
         ['/world/hello-b', '/world/{moin:\w+}-b', ['moin' => 'hello'], function() { }],
-        ['/world/hello-b', '/world/{moin:\w{5}-b', false, function() { }],
+        ['/world/hello-b', '/world/{moin:\w{5}}-b', ['moin' => 'hello'], function() { }],
         ['/world/hello-a', '/world/{moin:\w+}-b', false, function() { }],
         ['/world/fooo', '/world/{moin:[a-z]{4}}', ['moin' => 'fooo'], function() { }],
       ];
