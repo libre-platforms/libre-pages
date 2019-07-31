@@ -71,6 +71,9 @@
 
     /** @var int $server_port */
     public $server_port = 0;
+    
+    /** @var ?\PDO $pdo */
+    public $pdo = null;
 
     /**
      * Constructs a Request object from the given data of the current request.
