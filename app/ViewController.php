@@ -3,9 +3,8 @@
 
   use Framework\{Request, Response};
 
-  class TestController {
-    static function user_by_id(Request &$request, Response &$response) {
-      $response->write('hello from controller');
-      return $response;
+  class ViewController {
+    static function index(Request &$request, Response &$response) {
+      return $response->view(['index'], ['request' => $request]);
     }
   }
