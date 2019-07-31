@@ -18,7 +18,7 @@
 
   declare(strict_types=1);
 
-  require_once __DIR__.DIRECTORY_SEPARATOR.'autoload.php';
+  require_once __DIR__.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
   // functions collection may be turned off, if it is not used
   require_once __DIR__.DIRECTORY_SEPARATOR.'pages'.DIRECTORY_SEPARATOR.'functions.php';
   $view_evaulator = Pages\make_view_evaluator(__DIR__.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR);
