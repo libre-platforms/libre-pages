@@ -88,4 +88,20 @@ class ValidationTest extends TestCase {
     $val($this->request, $this->response, $this->dummy_next);
     $this->assert(isset($this->request->validation_errors['foo']), 'Expected invalid field to be marked in the validation errors!');
   }
+
+  function test_valid_request_is_not_rejected() {
+    $val = Validation::query('foo');
+    $this->request->query['foo'] = 123;
+    $val($this->request, $this->response, $this->dummy_next);
+    $response = Validation::reject_on_error($this->request, $this->response, $this->dummy_next);
+    $this->assert($this->response->status() === 200, 'Expected response code to keep default value!');
+    $this->assert($response === ($this->dummy_next)(), 'Expected response to be dummt_next return value!');
+  }
+
+  function test_invalid_request_is_rejected() {
+    $val = Validation::query('foo');
+    $val($this->request, $this->response, $this->dummy_next);
+    Validation::reject_on_error($this->request, $this->response, $this->dummy_next);
+    $this->assert($this->response->status() === 422, 'Expected response code to keep default value!');
+  }
 }
