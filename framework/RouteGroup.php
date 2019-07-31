@@ -38,8 +38,7 @@
      */
     function get_router() {
       $router = new Router($this->_route);
-      $builder = $this->_group_builder;
-      $builder($router);
+      ($this->_group_builder)($router);
       return $router;
     }
   }
