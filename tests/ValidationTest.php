@@ -18,7 +18,7 @@
 
 namespace Tests;
 
-use Framework\{
+use Pages\{
   Request, Response, TestCase, Validation
 };
 

@@ -18,7 +18,7 @@
 
   namespace Tests;
 
-  use Framework\{
+  use Pages\{
     TestCase, Router
   };
 
