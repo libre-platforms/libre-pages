@@ -24,7 +24,7 @@
   $view_evaulator = Framework\make_view_evaluator(__DIR__.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR);
 
   define('APP_ROOT', __DIR__);
-  define('APP_START', time());
+  define('APP_START', microtime(true));
 
   ob_start();
 
@@ -42,8 +42,8 @@
 
     if (is_array($handler_with_params)) {
       [$handler, $params] = $handler_with_params;
-      if ($params === true) {
-        $params = [];
+      if (is_array($handler)) {
+        $handler = Framework\Router::make_handler_chain($handler);
       }
       $request = Framework\Request::from_current_request($params);
       $response = new Framework\Response;
