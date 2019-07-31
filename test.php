@@ -34,8 +34,7 @@
     }
   }
 
-  require_once __DIR__.DIRECTORY_SEPARATOR.'autoload.php';
-  require_once __DIR__.DIRECTORY_SEPARATOR.'pages'.DIRECTORY_SEPARATOR.'functions.php';
+  require_once __DIR__.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
 
   $files = scandir(__DIR__.DIRECTORY_SEPARATOR.'tests');
   $test_suites_classes = [];
