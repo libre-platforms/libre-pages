@@ -1,16 +1,19 @@
 {
-    "name": "libre-platforms/libre-pages",
-    "description": "A foundation for PHP application development.",
-    "type": "project",
-    "license": "AGPL-3.0-or-later",
-    "authors": [
-        {
-            "name": "Jörn Neumeyer",
-            "email": "contact@joern-neumeyer.de"
-        }
-    ],
-    "require": {},
-    "require-dev": {
-        "phan/phan": "^2.2"
-    }
+	"name" : "libre-platforms/libre-pages",
+	"description" : "A foundation for PHP application development.",
+	"type" : "project",
+	"license" : "AGPL-3.0-or-later",
+	"authors" : [{
+			"name" : "Jörn Neumeyer",
+			"email" : "contact@joern-neumeyer.de"
+		}
+	],
+	"require-dev" : {
+		"phan/phan" : "^2.2"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Pages\\" : "pages"
+		}
+	}
 }
