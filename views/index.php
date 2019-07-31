@@ -6,18 +6,9 @@
 <html>
 	<head>
 		<title>LibrePages</title>
-		<link type="css" rel="stylesheet" href="<?=$asset_loader('css/sierra.css')?>" />
 		<link type="css" rel="stylesheet" href="<?=$asset_loader('css/global.css')?>" />
 	</head>
 	<body>
-		<section class="container">
-			<header class="header">
-				LibrePages
-			</header>
-			<main>
-			</main>
-			<footer>
-			</footer>
-		</section>
+		LibrePages
 	</body>
 </html>
