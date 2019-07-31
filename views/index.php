@@ -1,5 +1,5 @@
 <?php
-  $asset_loader = Framework\make_asset_loader($request);
+  $asset_loader = Pages\make_asset_loader($request);
 ?>
 
 <!DOCTYPE html>

@@ -1,7 +1,7 @@
 <?php
   namespace App;
 
-  use Framework\{Request, Response};
+  use Pages\{Request, Response};
 
   class ViewController {
     static function index(Request &$request, Response &$response) {

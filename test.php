@@ -35,13 +35,13 @@
   }
 
   require_once __DIR__.DIRECTORY_SEPARATOR.'autoload.php';
-  require_once __DIR__.DIRECTORY_SEPARATOR.'framework'.DIRECTORY_SEPARATOR.'functions.php';
+  require_once __DIR__.DIRECTORY_SEPARATOR.'pages'.DIRECTORY_SEPARATOR.'functions.php';
 
   $files = scandir(__DIR__.DIRECTORY_SEPARATOR.'tests');
   $test_suites_classes = [];
 
   foreach ($files as $file) {
-    if (Framework\ends_with($file, '.php')) {
+    if (Pages\ends_with($file, '.php')) {
       $test_suites_classes[] = 'Tests\\'.substr($file, 0, strlen($file) - 4);
     }
   }

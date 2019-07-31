@@ -20,15 +20,15 @@
 
   require_once __DIR__.DIRECTORY_SEPARATOR.'autoload.php';
   // functions collection may be turned off, if it is not used
-  require_once __DIR__.DIRECTORY_SEPARATOR.'framework'.DIRECTORY_SEPARATOR.'functions.php';
-  $view_evaulator = Framework\make_view_evaluator(__DIR__.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR);
+  require_once __DIR__.DIRECTORY_SEPARATOR.'pages'.DIRECTORY_SEPARATOR.'functions.php';
+  $view_evaulator = Pages\make_view_evaluator(__DIR__.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR);
 
   define('APP_ROOT', __DIR__);
   define('APP_START', microtime(true));
 
   ob_start();
 
-  $router = new Framework\Router();
+  $router = new Pages\Router();
 
   $request_path = $_SERVER['PATH_INFO'] ?? '/';
   
@@ -43,10 +43,10 @@
     if (is_array($handler_with_params)) {
       [$handler, $params] = $handler_with_params;
       if (is_array($handler)) {
-        $handler = Framework\Router::make_handler_chain($handler);
+        $handler = Pages\Router::make_handler_chain($handler);
       }
-      $request = Framework\Request::from_current_request($params);
-      $response = new Framework\Response;
+      $request = Pages\Request::from_current_request($params);
+      $response = new Pages\Response;
       $response->set_view_evaluator($view_evaulator);
       $response = $handler($request, $response);
       print $response->send();
