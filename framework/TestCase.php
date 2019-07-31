@@ -117,7 +117,7 @@
         } catch (\Throwable $ex) {
           $exception_type = get_class($ex);
           if ($this->expected_exception === null) {
-            return [false, "Encountered unexpected exception of type {$exception_type}! Message: {$ex->getMessage()};"];
+            return [false, "Encountered unexpected exception of type {$exception_type}! Message: {$ex->getMessage()};".PHP_EOL."    Trace:".PHP_EOL.$ex->getTraceAsString()];
           } else {
             if (!is_a($ex, $this->expected_exception[0])) {
               return [false, "Mismatched exception type! Expected {$this->expected_exception[0]} but got {$exception_type}! Message: ".$this->expected_exception[1]];

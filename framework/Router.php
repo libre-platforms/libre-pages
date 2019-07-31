@@ -204,8 +204,18 @@
                 break;
               }
             }
-            $params[$param] = \substr($path, $i_path, $j);
+            $param_value = \substr($path, $i_path, $j);
             $i_path += $j - 1;
+            if (isset($route[$i_route + 1])) {
+              for ($k = 1; isset($route[$i_route + $k]); ++$k) {
+                if ($route[$i_route + $k] === '/') {
+                  break;
+                }
+              }
+              $param_value = \substr($param_value, 0, $j - $k + 1);
+              $i_path -= $k - 1;
+            }
+            $params[$param] = $param_value;
           }
         } else if ($path[$i_path] !== $route[$i_route]) {
           return false;
