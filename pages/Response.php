@@ -17,7 +17,7 @@
 //  along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
 
   declare(strict_types=1);
-  namespace Framework;
+  namespace Pages;
 
   /**
    * Represents a server response.

@@ -16,7 +16,7 @@
 //  You should have received a copy of the GNU Affero General Public License
 //  along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
   declare(strict_types=1);
-  namespace Framework;
+  namespace Pages;
 
   /**
    * Returns a function, which returns absolute links to files in the 'assets' folder.

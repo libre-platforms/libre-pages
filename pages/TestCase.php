@@ -15,7 +15,7 @@
 //
 //  You should have received a copy of the GNU Affero General Public License
 //  along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
-  namespace Framework;
+  namespace Pages;
 
   class TestCase {
     private $expected_exception = null;

@@ -18,7 +18,7 @@
 
   declare(strict_types=1);
 
-  namespace Framework;
+  namespace Pages;
 
   /**
    * Represents a file, which has been uploaded with a request.
