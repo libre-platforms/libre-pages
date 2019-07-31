@@ -16,6 +16,9 @@
 			"Pages\\" : "pages",
 			"App\\" : "app",
 			"Tests\\" : "tests"
-		}
+		},
+		"files" : [
+			"pages/functions.php"
+		]
 	}
 }
