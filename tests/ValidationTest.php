@@ -81,10 +81,66 @@ class ValidationTest extends TestCase {
     $val($this->request, $this->response, $this->dummy_next);
     $this->assert(!isset($this->request->validation_errors['foo']), 'Expected valid field not to be marked in the validation errors!');
   }
-
+  
   function test_invalid_string_fails() {
     $val = Validation::body('foo')->is_string();
     $this->request->body['foo'] = 1;
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(isset($this->request->validation_errors['foo']), 'Expected invalid field to be marked in the validation errors!');
+  }
+  
+  function test_valid_float_passes() {
+    $val = Validation::body('foo')->is_float();
+    $this->request->body['foo'] = 2.3;
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(!isset($this->request->validation_errors['foo']), 'Expected valid field not to be marked in the validation errors!');
+  }
+  
+  function test_invalid_float_fails() {
+    $val = Validation::body('foo')->is_float();
+    $this->request->body['foo'] = '123';
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(isset($this->request->validation_errors['foo']), 'Expected invalid field to be marked in the validation errors!');
+  }
+  
+  function test_valid_int_passes() {
+    $val = Validation::body('foo')->is_int();
+    $this->request->body['foo'] = 2;
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(!isset($this->request->validation_errors['foo']), 'Expected valid field not to be marked in the validation errors!');
+  }
+  
+  function test_invalid_int_fails() {
+    $val = Validation::body('foo')->is_int();
+    $this->request->body['foo'] = 2.3;
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(isset($this->request->validation_errors['foo']), 'Expected invalid field to be marked in the validation errors!');
+  }
+  
+  function test_valid_numeric_passes() {
+    $val = Validation::body('foo')->is_numeric();
+    $this->request->body['foo'] = '23';
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(!isset($this->request->validation_errors['foo']), 'Expected valid field not to be marked in the validation errors!');
+  }
+  
+  function test_invalid_numeric_fails() {
+    $val = Validation::body('foo')->is_numeric();
+    $this->request->body['foo'] = '45a';
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(isset($this->request->validation_errors['foo']), 'Expected invalid field to be marked in the validation errors!');
+  }
+  
+  function test_valid_array_passes() {
+    $val = Validation::body('foo')->is_array();
+    $this->request->body['foo'] = [1];
+    $val($this->request, $this->response, $this->dummy_next);
+    $this->assert(!isset($this->request->validation_errors['foo']), 'Expected valid field not to be marked in the validation errors!');
+  }
+  
+  function test_invalid_array_fails() {
+    $val = Validation::body('foo')->is_array();
+    $this->request->body['foo'] = '45a';
     $val($this->request, $this->response, $this->dummy_next);
     $this->assert(isset($this->request->validation_errors['foo']), 'Expected invalid field to be marked in the validation errors!');
   }
