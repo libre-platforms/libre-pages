@@ -21,19 +21,6 @@
 
   /**
    * Represents an incoming request to the server.
-   *
-   * @property string $method
-   * @property string $path
-   * @property array $params
-   * @property array $files
-   * @property array $cookies
-   * @property array $headers
-   * @property array $query
-   * @property array $body
-   * @property array $validation_errors
-   * @property bool $https
-   * @property string $server_name
-   * @property int $server_port
    */
   class Request {
     /** @var string $method */
