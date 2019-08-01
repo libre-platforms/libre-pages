@@ -15,15 +15,16 @@ All you have to do is to add a `.php` file to the folder `tests`.
 I.e. the file `tests/FooTest.php` should define the class `FooTest` in the namespace `Tests`.
 This naming is mandatory for the autoloader to properly function.
 
-Your test suite (class) should inherit from `Framework\TestCase`.
+Your test suite (class) should inherit from `Pages\TestCase`.
 This allows you to use core testing functionalities:
 
 - assertions
 - expecting exceptions
+- parameterized testing
 - test(-suite) setup/teardown
 
 These features are probably not all you would like to have, but everything you __need__ in order to test your code.
-In case you think you need more functionality, just add it to the `Framework\TestCase` class.
+In case you think you need more functionality, just add it to the `Pages\TestCase` class.
 
 #### Registering tests
 All methods starting with `test` (like `test_accumulates_properly`) are considered to be tests.
@@ -40,24 +41,78 @@ You can also run all tests automatically on file, if you use the script `test-wa
 __Note:__ This script requires `inotifywait` in order to watch for file changes.
 So, make sure `inotify-tools` is installed on your machine.
 
-#### before_test()
+The following sections describe the methods which `Pages\TestCase` provides.
+
+#### before\_test(): void
 This method is executed before every test.
 It should be used to perform necessary setup before each test.
 
-#### after_test()
+Override this method to use it.
+
+#### after\_test(): void
 This method is executed after every test.
 It should be used to perform necessary teardown after each test.
 
-#### before_test_suite()
+Override this method to use it.
+
+#### before\_test\_suite(): void
 This method is run before the first test of the test suite is run.
 One good usecase would be the initialization of the test suite with test data, which cannot be assigned in a static context.
 
-#### after_test_suite()
+Override this method to use it.
+
+#### after\_test\_suite(): void
 This method is run after the last test of the test suite is run.
 
-#### $this->assert($condition[, $failed_message])
+Override this method to use it.
+
+#### assert($condition[, string $failed\_message]): void
 Via the `assert` method, you can add an assertion to the current test.
 
+```php
+function test_assertion() {
+  $this->assert(1 === 1, 'One should be one!');
+}
+```
+
+#### expect_exception(string $type[, string $message])
+If this method is called, the test is expected to throw an exception of the provided type (name).
+The thrown exception has to match the given type and not be of a derived type!
+
+This method also disables regular assertions in a test, as the test's goal is the throw of the expected exception.
+
+```php
+function test_throws() {
+  $this->expect_exception(\Exception::class);
+  throw new \Exception('Works!');
+}
+```
+
+#### parameterized(string $test_name, array $data)
+This method marks a test as parameterized.
+The `$data` array should be structured like
+
+```php
+[
+  ['foo', 'bar', 'foo bar'],
+  ['hello', 'world', 'hello world']
+]
+```
+
+So, the test can be defined like
+
+```php
+function test_concat($word1, $word2, $result) {
+  $this->assert(some_concat($word1, $word2) === $result, 'Expected concatonation to work!');
+}
+```
+
+A suitable place to perform the `parameterized` test registration is in the method `before_test_suite`.
+
+#### run(): array
+Runs/executes the test suite and returns an array, containing the results of the assertions made in the defined tests.
+
+This method will be executed auttomatically by the test runner.
 
 ## License
 LibrePages is free software: you can redistribute it and/or modify
