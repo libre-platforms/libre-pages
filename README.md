@@ -8,6 +8,17 @@ Its focus does not lie on the development of fullstack applications, but on REST
 - [Testing](#testing)
 
 ### Routing
+Every web applicatttion needs some kind of routing mechanism.
+Even if just use raw folder and file structures.
+However, having endpoints like `/users` is nicer than `/users.php`.
+Such endpoints also allow for more resource driven endpoint development, as you can just naturally go into more detail about the resource (e.g. `/users/1/email`).
+The router of LibrePages is very simple and easily extendable, in case it does not provide all the HTTP verbs you need.
+
+You may register all routes of your application in the file `routes.php`.
+This file automatically receives an instance of the class `Pages\Router`.
+That automatic instance is also going to be used by the script `index.php` to process incoming requests.
+
+The following listing showcases the API of the `Pages\Router` class, which is used for route registration.
 
 ### Testing
 Writing tests is fairly simple.
