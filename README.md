@@ -5,6 +5,7 @@ Its focus does not lie on the development of fullstack applications, but on REST
 ## Documentation
 
 - [Routing](#routing)
+- [Pages\Request](./pages-request.md)
 - [Testing](#testing)
 
 ### Routing
@@ -19,6 +20,44 @@ This file automatically receives an instance of the class `Pages\Router`.
 That automatic instance is also going to be used by the script `index.php` to process incoming requests.
 
 The following listing showcases the API of the `Pages\Router` class, which is used for route registration.
+
+#### get(string $route, $handler)
+Registers a handler which is invoked if the specified route is matched on a GET request.
+
+#### post(string $route, $handler)
+Registers a handler which is invoked if the specified route is matched on a POST request.
+
+#### put(string $route, $handler)
+Registers a handler which is invoked if the specified route is matched on a PUT request.
+
+#### delete(string $route, $handler)
+Registers a handler which is invoked if the specified route is matched on a DELETE request.
+
+#### What is a handler?
+A handler may be a `Closure` or `callable` strings.
+If you pass a `callable` directly as a string, it may not be an array!
+Arrays will be treated as collections of handlers!
+
+#### A full example of routing
+So, let's define a controller:
+
+```php
+namespace App;
+
+class FooController {
+  static function some_handler($request, $response) {
+    return $response->write('Hello world!');
+  }
+}
+```
+
+All app related code, like controllers, should be placed in the `app` folder.
+Hence the `namespace App;`.
+To skip the necessity for the creation of an instance of the controller,
+it is recommended to implement all handlers in static methods inside the controller class.
+
+A handler always receives two parameters: the incoming `$request` of type `Pages\Request`,
+and the outgoing `$response` of type `Pages\Response`.
 
 ### Testing
 Writing tests is fairly simple.
