@@ -55,32 +55,51 @@
     $ob = ob_get_contents();
     ob_clean();
     http_response_code(500);
+    $asset_loader = Pages\make_asset_loader($request);
       ?>
-<h1>An uncaught Exception has been thrown!</h1>
-Message: <?=$ex->getMessage()?><br />
-File with line: <?=$ex->getFile().':'.$ex->getLine()?><br />
+<html>
+  <head>
+    <title>Error!</title>
+    <style>
+    @font-face {
+      font-family: Mechanical;
+      src: url("<?=$asset_loader('fonts/Mechanical.otf')?>") format("opentype");
+    }
+    </style>
+    <link type="text/css" rel="stylesheet" href="<?=$asset_loader('css/application-error.css')?>" />
+  </head>
+  <body>
+    <h1>An uncaught Exception has been thrown!</h1>
+    Message: <?=$ex->getMessage()?><br />
+    File with line: <?=$ex->getFile().':'.$ex->getLine()?><br />
 
-<h3>Stack Trace</h3>
-<table>
-  <thead>
-    <tr>
-      <th>File</th>
-      <th>Line</th>
-      <th>Function</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php foreach ($ex->getTrace() as $t): ?>
-      <tr>
-        <td><?=$t['file']?></td>
-        <td><?=$t['line']?></td>
-        <td><?=$t['function']?></td>
-      </tr>
-    <?php endforeach; ?>
-  </tbody>
-</table>
-<p>Output generated before exception:</p>
-<pre><?=$ob?></pre>
+    <h3>Stack Trace</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>File</th>
+          <th>Line</th>
+          <th>Function</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($ex->getTrace() as $t): ?>
+          <?php if(isset($t['file'])): ?>
+          <tr>
+            <td><?=$t['file']?></td>
+            <td><?=$t['line']?></td>
+            <td><?=$t['function']?></td>
+          </tr>
+          <?php endif; ?>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+    <?php if ($ob): ?>
+    <p>Output generated before exception:</p>
+    <pre><?=$ob?></pre>
+    <?php endif; ?>
+  </body>
+</html>
 <?php
   }
 
