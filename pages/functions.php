@@ -44,3 +44,27 @@
     $needle_length = strlen($needle);
     return strrpos($haystack, $needle) === $haystack_length - $needle_length;
   }
+
+  /**
+   * This function generates HTML code, to populate a `code` element with a 7 row
+   * deep snippet of the code's content, given the provideed line number.
+   */
+  function generate_file_view(string $text, int $line) {
+    $code_lines = explode("\n", $text);
+    $line_count = count($code_lines);
+    $slice_length = 7;
+    $first_line_index = $line - 4;
+    if ($first_line_index < 0) {
+      $slice_length += $first_line_index;
+      $first_line_index = 0;
+    }
+    $snippet = array_slice($code_lines, $first_line_index, $slice_length);
+    $snippet_count = count($snippet);
+    $highlight_index = $line >= $snippet_count ? 3 : $line - 1;
+    for ($i = 0; $i < $snippet_count; ++$i) {
+      $snippet[$i] = (str_pad((string)($first_line_index + $i + 1), 6, ' ') . ' | ' . $snippet[$i]);
+      if ($i === $highlight_index) $snippet[$i] = "<strong>{$snippet[$i]}</strong>";
+    }
+    $snippet = implode("\r\n", $snippet);
+    return $snippet;
+  }
