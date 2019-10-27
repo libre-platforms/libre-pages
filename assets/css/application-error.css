@@ -1,3 +1,8 @@
 body {
   font-family: Mechanical;
+  background-color: #dddddd;
+}
+
+code > strong {
+  color: red;
 }
