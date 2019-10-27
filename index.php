@@ -57,6 +57,7 @@
     http_response_code(500);
     $asset_loader = Pages\make_asset_loader($request);
       ?>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Error!</title>
@@ -74,26 +75,21 @@
     File with line: <?=$ex->getFile().':'.$ex->getLine()?><br />
 
     <h3>Stack Trace</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>File</th>
-          <th>Line</th>
-          <th>Function</th>
-        </tr>
-      </thead>
-      <tbody>
+    <?=$ex->getFile()?>
+          <pre><code>
+<?=Pages\generate_file_view(file_get_contents($ex->getFile()), $ex->getLine())?></code></pre>
         <?php foreach ($ex->getTrace() as $t): ?>
           <?php if(isset($t['file'])): ?>
-          <tr>
-            <td><?=$t['file']?></td>
+<?=$t['file']?>
+          <pre><code>
+<?=Pages\generate_file_view(file_get_contents($t['file']), $t['line'])?></code></pre>
+          <!--<tr>
+            <td></td>
             <td><?=$t['line']?></td>
             <td><?=$t['function']?></td>
-          </tr>
+          </tr>-->
           <?php endif; ?>
         <?php endforeach; ?>
-      </tbody>
-    </table>
     <?php if ($ob): ?>
     <p>Output generated before exception:</p>
     <pre><?=$ob?></pre>
