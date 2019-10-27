@@ -11,6 +11,9 @@
 	"require-dev" : {
 		"phan/phan" : "^2.2"
 	},
+	"require": {
+		"php": ">=7.4.0"
+	},
 	"autoload" : {
 		"psr-4" : {
 			"Pages\\" : "pages",
