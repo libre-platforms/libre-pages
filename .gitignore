@@ -1,1 +1,4 @@
 /vendor/
+/nbproject/private/
+docs/
+ast.dump
