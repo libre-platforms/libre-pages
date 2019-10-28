@@ -6,8 +6,8 @@ Its focus does not lie on the development of fullstack applications, but on REST
 The source code contains most documentation you need to get started.
 You can also find a couple of examples in the existing project code.
 
-To get a bigger overview of the functionality available to you, you can generate docs via phpDocumentor.
-As soon as you installed it, you can use the script in `doc` to generate proper docs.
+To get a bigger overview of the functionality available to you, you can generate docs via [phpDocumentor](https://phpdoc.org/).
+As soon as you installed it, you can use the `doc` script to generate proper docs.
 
 ## License
 LibrePages is free software: you can redistribute it and/or modify
