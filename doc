@@ -1,0 +1,2 @@
+#!/bin/sh
+phpdoc -d . -t docs --ignore "vendor/,docs/" --title LibrePages -p -vvv
