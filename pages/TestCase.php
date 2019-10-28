@@ -17,7 +17,7 @@
  * 
  * @author    Jörn Neumeyer <contact@joern-neumeyer.de>
  * @copyright 2019 Jörn Neumeyer
-*/
+ */
   namespace Pages;
 
   /**
