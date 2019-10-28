@@ -23,9 +23,16 @@
    * Defindes a group routes which are grouped by a common route prefix.
    */
   class RouteGroup {
+    /** @var string $_route The common prefix of the route group. */
     protected $_route;
+    /** @var \Closure $_group_builder A closure, defining all the routes belonging to the group. */
     protected $_group_builder;
 
+    /**
+     * 
+     * @param string $route The common prefix of the route group.
+     * @param \Closure $group_builder A closure, defining all the routes belonging to the group.
+     */
     function __construct(string $route, \Closure $group_builder) {
       $this->_route = $route;
       $this->_group_builder = $group_builder;

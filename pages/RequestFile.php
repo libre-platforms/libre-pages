@@ -30,19 +30,28 @@
    * @property int $size
    */
   class RequestFile {
+    /** @var array $_data Uploaded file related data. */
     protected $_data;
+    /** @var bool $_is_saved A flag indicating the file's persistence status. */
     protected $_is_saved = false;
 
     function __construct(array $data) {
       $this->_data = $data;
     }
 
+    /**
+     * Gets a property of the object.
+     * 
+     * @param string $key The property name.
+     */
     function __get(string $key) {
       return $this->_data ?? null;
     }
 
     /**
      * Trys to save an uploaded file to the given location.
+     * 
+     * @param string $destination The target storing location of the file.
      * 
      * @return bool
      */

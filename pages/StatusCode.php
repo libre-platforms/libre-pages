@@ -19,7 +19,10 @@
   declare(strict_types=1);
   namespace Pages;
 
-  class StatusCode {
+  /**
+   * A helper class to add semantics for status code setting/getting.
+   */
+  final class StatusCode {
     const CONTINUE = 100;
     const SWITCHING_PROTOCOLS = 101;
     const PROCESSING = 102;
