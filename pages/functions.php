@@ -20,6 +20,8 @@
 
   /**
    * Returns a function, which returns absolute links to files in the 'assets' folder.
+   * 
+   * @param &\Pages\Request $request The request
    */
   function make_asset_loader(Request& $request) {
     $asset_base = "http".($request->https ? 's' : '').'://'.$request->server_name.':'.$request->server_port.'/assets/';
@@ -30,14 +32,17 @@
    * Returns a function, which may load and evaluate views, located in the given views folder.
    */
   function make_view_evaluator(string $view_base_path) {
-    return function(array $view, array $data = []) use (&$view_base_path) {
-      extract($data);
-      require $view_base_path.implode(DIRECTORY_SEPARATOR, $view).'.php';
-    };
+    return fn(array $view, array $data = []) =>
+      extract($data) && require $view_base_path.implode(DIRECTORY_SEPARATOR, $view).'.php';
   }
 
   /**
    * Checks if the haystack ends with the provided needle.
+   * 
+   * @param string $haystack The string which end will be checked.
+   * @param string $needle The needle to look for at the end of the haystack.
+   * 
+   * @return bool The matching success.
    */
   function ends_with(string $haystack, string $needle) {
     $haystack_length = strlen($haystack);
@@ -47,7 +52,12 @@
 
   /**
    * This function generates HTML code, to populate a `code` element with a 7 row
-   * deep snippet of the code's content, given the provideed line number.
+   * deep snippet of the code's content, given the provided line number.
+   * 
+   * @param string $text The text which one would like to peek at a certain line.
+   * @param int $line The line that should be peeked.
+   * 
+   * @return string The text view with highlighting for the specified line.
    */
   function generate_file_view(string $text, int $line) {
     $code_lines = explode("\n", $text);
