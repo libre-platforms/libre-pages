@@ -1,31 +1,41 @@
 <?php
-//  Copyright (C) 2019 Jörn Neumeyer
-//
-//  This file is part of LibrePages.
-//
-//  LibrePages is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU Affero General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  LibrePages is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU Affero General Public License for more details.
-//
-//  You should have received a copy of the GNU Affero General Public License
-//  along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
+/**
+ * This file is part of LibrePages.
+ *
+ * LibrePages is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LibrePages is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
+ * 
+ * @author    Jörn Neumeyer <contact@joern-neumeyer.de>
+ * @copyright 2019 Jörn Neumeyer
+ */
   namespace Pages;
 
+  /**
+   * Represents a test case for unit testing.
+   */
   class TestCase {
+    /** @var string $expected_exception The \Throwable subtype which is expected to be thrown in the test. */
     private $expected_exception = null;
+    /** @var array $assertions The collection of assertions made in a test. */
     private $assertions = [];
+    /** @var array $parameterized_tests The collection of parameterized tests in the test suite. */
     private $parameterized_tests = [];
 
     /**
      * Expectes an assertion to be thrown in the current test.
      * 
      * @param string $type The class type of the exception which is expected to be thrown.
+     * @param string $message The message to be displayed, if the expected exception was not thrown.
      */
     function expect_exception(string $type, string $message = 'Expected Exception!') {
       if (!is_subclass_of($type, \Throwable::class)) {
@@ -67,12 +77,19 @@
     /**
      * Asserts the given condition to evaluate to true.
      * 
+     * @param * $condition The condition to be assert for truthiness.
      * @param string $failed_message The message to be displayed, if the assertion fails.
      */
     function assert($condition, string $failed_message = 'Assertion failed!') {
       $this->assertions[] = [$condition, $failed_message];
     }
 
+    /**
+     * Adds a parameterized test to the test suite.
+     * 
+     * @param string $test_name The name of the test in the suite (method name).
+     * @param array $data An array, containing arrays to be used as parameters for the parameterized test.
+     */
     function parameterized(string $test_name, array $data) {
       $this->parameterized_tests[$test_name] = $data;
     }

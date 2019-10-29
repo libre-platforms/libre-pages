@@ -1,69 +1,75 @@
 <?php
-//  Copyright (C) 2019 Jörn Neumeyer
-//
-//  This file is part of LibrePages.
-//
-//  LibrePages is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU Affero General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  LibrePages is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU Affero General Public License for more details.
-//
-//  You should have received a copy of the GNU Affero General Public License
-//  along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
+/**
+ * This file is part of LibrePages.
+ *
+ * LibrePages is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LibrePages is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
+ * 
+ * @author    Jörn Neumeyer <contact@joern-neumeyer.de>
+ * @copyright 2019 Jörn Neumeyer
+ */
 
   declare(strict_types=1);
   namespace Pages;
 
   /**
    * Represents an incoming request to the server.
+   * A simple collection of public data fields.
    */
   class Request {
-    /** @var string $method */
+    /** @var string $method The HTTP verb of the request. */
     public $method = '';
 
-    /** @var string $path */
+    /** @var string $path The URL without protocol (http) and without FQDN. */
     public $path = '';
 
-    /** @var array $params */
+    /** @var array $params Any parameters found in the URL, depending on the path. */
     public $params = [];
 
-    /** @var array $files */
+    /** @var array $files Files uploaded with the request. */
     public $files = [];
 
-    /** @var array $cookies */
+    /** @var array $cookies Cookies sent with the request. */
     public $cookies = [];
 
-    /** @var array $headers */
+    /** @var array $headers Headers sent with the request. */
     public $headers = [];
 
-    /** @var array $query */
+    /** @var array $query Query parameters provided in the URL. */
     public $query = [];
 
-    /** @var array $body */
+    /** @var array $body Request body fields. */
     public $body = [];
 
-    /** @var array $validation_errors */
+    /** @var array $validation_errors Collection of caught validation errors. */
     public $validation_errors = [];
 
-    /** @var bool $https */
+    /** @var bool $https Indicator for HTTPS usage. */
     public $https = false;
 
-    /** @var string $server_name */
+    /** @var string $server_name Copy of $_SERVER['SERVER_NAME']. */
     public $server_name = '';
 
-    /** @var int $server_port */
+    /** @var int $server_port Port number the server is running on. */
     public $server_port = 0;
     
-    /** @var ?\PDO $pdo */
+    /** @var ?\PDO $pdo Possible database connection, if one is provided. */
     public $pdo = null;
 
     /**
      * Constructs a Request object from the given data of the current request.
+     * 
+     * @param array $params An array containing the parameters fetched from the current route.
      * 
      * @return Request
      */

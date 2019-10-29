@@ -1,20 +1,23 @@
 <?php
-//  Copyright (C) 2019 Jörn Neumeyer
-//
-//  This file is part of LibrePages.
-//
-//  LibrePages is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU Affero General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  LibrePages is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU Affero General Public License for more details.
-//
-//  You should have received a copy of the GNU Affero General Public License
-//  along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
+/**
+ * This file is part of LibrePages.
+ *
+ * LibrePages is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LibrePages is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
+ * 
+ * @author    Jörn Neumeyer <contact@joern-neumeyer.de>
+ * @copyright 2019 Jörn Neumeyer
+*/
 
   declare(strict_types=1);
 
@@ -55,32 +58,47 @@
     $ob = ob_get_contents();
     ob_clean();
     http_response_code(500);
+    $asset_loader = Pages\make_asset_loader($request);
       ?>
-<h1>An uncaught Exception has been thrown!</h1>
-Message: <?=$ex->getMessage()?><br />
-File with line: <?=$ex->getFile().':'.$ex->getLine()?><br />
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Error!</title>
+    <style>
+    @font-face {
+      font-family: Mechanical;
+      src: url("<?=$asset_loader('fonts/Mechanical.otf')?>") format("opentype");
+    }
+    </style>
+    <link type="text/css" rel="stylesheet" href="<?=$asset_loader('css/application-error.css')?>" />
+  </head>
+  <body>
+    <h1>An uncaught Exception has been thrown!</h1>
+    Message: <?=$ex->getMessage()?><br />
+    File with line: <?=$ex->getFile().':'.$ex->getLine()?><br />
 
-<h3>Stack Trace</h3>
-<table>
-  <thead>
-    <tr>
-      <th>File</th>
-      <th>Line</th>
-      <th>Function</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php foreach ($ex->getTrace() as $t): ?>
-      <tr>
-        <td><?=$t['file']?></td>
-        <td><?=$t['line']?></td>
-        <td><?=$t['function']?></td>
-      </tr>
-    <?php endforeach; ?>
-  </tbody>
-</table>
-<p>Output generated before exception:</p>
-<pre><?=$ob?></pre>
+    <h3>Stack Trace</h3>
+    <?=$ex->getFile()?>
+          <pre><code>
+<?=Pages\generate_file_view(file_get_contents($ex->getFile()), $ex->getLine())?></code></pre>
+        <?php foreach ($ex->getTrace() as $t): ?>
+          <?php if(isset($t['file'])): ?>
+<?=$t['file']?>
+          <pre><code>
+<?=Pages\generate_file_view(file_get_contents($t['file']), $t['line'])?></code></pre>
+          <!--<tr>
+            <td></td>
+            <td><?=$t['line']?></td>
+            <td><?=$t['function']?></td>
+          </tr>-->
+          <?php endif; ?>
+        <?php endforeach; ?>
+    <?php if ($ob): ?>
+    <p>Output generated before exception:</p>
+    <pre><?=$ob?></pre>
+    <?php endif; ?>
+  </body>
+</html>
 <?php
   }
 

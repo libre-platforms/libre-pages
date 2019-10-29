@@ -1,21 +1,24 @@
 <?php
-//  Copyright (C) 2019 Jörn Neumeyer
-//
-//  This file is part of LibrePages.
-//
-//  LibrePages is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU Affero General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  LibrePages is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU Affero General Public License for more details.
-//
-//  You should have received a copy of the GNU Affero General Public License
-//  along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
-
+/**
+ * This file is part of LibrePages.
+ *
+ * LibrePages is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LibrePages is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with LibrePages.  If not, see <https://www.gnu.org/licenses/>.
+ * 
+ * @author    Jörn Neumeyer <contact@joern-neumeyer.de>
+ * @copyright 2019 Jörn Neumeyer
+ */
+  
   declare(strict_types=1);
   namespace Pages;
 
@@ -23,16 +26,25 @@
    * Represents a server response.
    */
   class Response {
+    /** @var int $_status_code The HTTP status code of the response. */
     protected $_status_code = 200;
+    /** @var string $_content_type The Content-Type header of the response. */
     protected $_content_type = 'text/html';
+    /** @var string $_content */
     protected $_content = '';
+    /** @var array $_view */
     protected $_view;
+    /** @var \Closure $_view_evaluator */
     protected $_view_evaluator;
+    /** @var array $_view_data */
     protected $_view_data;
+    /** @var arra $_cookiesy */
     protected $_cookies = [];
 
     /**
      * Sets the function needed to evaluate a view.
+     * 
+     * @param \Closure $evaluator A function which is capable of evaluating a view file.
      * 
      * @return Response
      */
@@ -43,6 +55,9 @@
 
     /**
      * Sets the status code of the response instance.
+     * If no new status code is provided, the current status code will be returned.
+     * 
+     * @param ?int $status_code The new status code.
      * 
      * @return Response|int
      */
@@ -56,7 +71,10 @@
     }
 
     /**
-     * Sets/gets the Content-Type of the surrent request.
+     * Sets the Content-Type of the current request.
+     * If no new content type is provided, the current content type will be returned.
+     * 
+     * @param ?string $content_type The new content type.
      * 
      * @return Response|string
      */
@@ -72,6 +90,8 @@
     /**
      * Writes the given string to the content of the response.
      * 
+     * @param string $content The content to be added to the response.
+     * 
      * @return Response
      */
     function& write(string $content) {
@@ -83,6 +103,8 @@
      * Sets the content type of the response to application/json and writes the given data as JSON to the response.
      * JSON conversion of the data happens internally.
      * 
+     * @param * $json Any data, which should be returned in JSON format.
+     * 
      * @return Response
      */
     function& json($json) {
@@ -91,6 +113,9 @@
 
     /**
      * Sets the view which should be rendered when the response is sent.
+     * 
+     * @param array $view The path to the view which should be evaluated by the provided view evaluator.
+     * @param array $data A collection of data which may be used by the view.
      * 
      * @return Response
      */
@@ -105,6 +130,10 @@
      * 
      * Implementation corresponds to the PHP7.3 implementation of setcookie.
      * @link https://www.php.net/manual/en/function.setcookie.php
+     * 
+     * @param string $name The name of the cookie.
+     * @param string $value The value of the cookie.
+     * @param array $options Options corresponding to default PHP cookie options.
      * 
      * @return Response
      */
